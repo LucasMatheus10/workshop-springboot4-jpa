@@ -2,6 +2,7 @@ package com.estudosjava.course.entities;
 
 import java.time.Instant;
 
+import com.estudosjava.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -38,9 +39,12 @@ public class Order implements java.io.Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant moment;
 
-    public Order(Long id, Instant moment, User client) {
+    private Integer orderStatus;
+
+    public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
         this.id = id;
         this.moment = moment;
+        this.orderStatus = orderStatus.getCode();
         this.client = client;
     }
 }
