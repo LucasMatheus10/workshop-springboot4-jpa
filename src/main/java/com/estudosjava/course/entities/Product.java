@@ -3,9 +3,9 @@ package com.estudosjava.course.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -21,20 +21,28 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode
 @Entity
-@Table(name = "tb_category")
-public class Category implements java.io.Serializable {
+@Table(name = "tb_product")
+public class Product implements java.io.Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Transient
-    private Set<Product> products = new HashSet<>();
+    private String description;
+    private Double price;
+    private String imgUrl;
 
-    public Category(Long id, String name) {
+    @Transient
+    private Set<Category> categories = new HashSet<>();
+
+    public Product(Long id, String name, String description, Double price, String imgUrl) {
         this.id = id;
         this.name = name;
+        this.description = description;
+        this.price = price;
+        this.imgUrl = imgUrl;
     }
+
 }

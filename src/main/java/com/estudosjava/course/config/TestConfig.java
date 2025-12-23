@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.estudosjava.course.entities.Category;
 import com.estudosjava.course.entities.Order;
+import com.estudosjava.course.entities.Product;
 import com.estudosjava.course.entities.User;
 import com.estudosjava.course.entities.enums.OrderStatus;
 import com.estudosjava.course.repositories.CategoryRepository;
 import com.estudosjava.course.repositories.OrderRepository;
+import com.estudosjava.course.repositories.ProductRepository;
 import com.estudosjava.course.repositories.UserRepository;
 
 @Configuration
@@ -29,8 +31,21 @@ public class TestConfig implements CommandLineRunner{
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     @Override
     public void run(String... args) throws Exception {
+        Category category1 = new Category(null, "Electronics");
+        Category category2 = new Category(null, "Books");
+        Category category3 = new Category(null, "Clothing");
+
+        Product product1 = new Product(null, "The Lord of the Rings", "A fantasy novel", 90.5, "");
+        Product product2 = new Product(null, "Smart TV", "42 inch smart TV", 2190.0, "");
+        Product product3 = new Product(null, "Macbook Pro", "Apple laptop", 1250.0, "");
+        Product product4 = new Product(null, "PC Gamer", "High performance gaming PC", 1200.0, "");
+        Product product5 = new Product(null, "Rails for Dummies", "A beginner's guide to Rails", 100.99, "");
+
         User user = new User(null, "John Doe", "john.doe@email.com", "1234567890", "password");
         User user2 = new User(null, "Jane Smith", "jane.smith@email.com", "0987654321", "password123");
 
@@ -38,11 +53,8 @@ public class TestConfig implements CommandLineRunner{
         Order order2 = new Order(null, Instant.parse("2024-06-02T11:30:00Z"), OrderStatus.PAID, user2);
         Order order3 = new Order(null, Instant.parse("2024-06-03T14:15:00Z"), OrderStatus.SHIPPED, user);
 
-        Category category1 = new Category(null, "Electronics");
-        Category category2 = new Category(null, "Books");
-        Category category3 = new Category(null, "Clothing");
-
         categoryRepository.saveAll(Arrays.asList(category1, category2, category3));
+        productRepository.saveAll(Arrays.asList(product1, product2, product3, product4, product5));
         userRepository.saveAll(Arrays.asList(user, user2));
         orderRepository.saveAll(Arrays.asList(order1, order2, order3));
     }
