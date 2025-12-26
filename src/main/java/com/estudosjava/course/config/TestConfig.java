@@ -46,6 +46,12 @@ public class TestConfig implements CommandLineRunner{
         Product product4 = new Product(null, "PC Gamer", "High performance gaming PC", 1200.0, "");
         Product product5 = new Product(null, "Rails for Dummies", "A beginner's guide to Rails", 100.99, "");
 
+        product1.getCategories().add(category2);
+        product2.getCategories().add(category1);
+        product3.getCategories().add(category1);
+        product4.getCategories().add(category1);
+        product5.getCategories().add(category2);
+
         User user = new User(null, "John Doe", "john.doe@email.com", "1234567890", "password");
         User user2 = new User(null, "Jane Smith", "jane.smith@email.com", "0987654321", "password123");
 

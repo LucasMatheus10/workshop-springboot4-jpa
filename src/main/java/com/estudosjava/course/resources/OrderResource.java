@@ -18,7 +18,7 @@ public class OrderResource {
     @Autowired
     private OrderServices service;
 
-    @GetMapping("findAll")
+    @GetMapping
     public ResponseEntity<List<Order>> findAll() {
         List<Order> list =  service.findAll();
         return ResponseEntity.ok().body(list);
