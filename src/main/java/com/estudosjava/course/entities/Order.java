@@ -3,7 +3,6 @@ package com.estudosjava.course.entities;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-
 import com.estudosjava.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -14,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -41,6 +41,8 @@ public class Order implements java.io.Serializable {
     @OneToMany(mappedBy = "id.order")
     @JsonManagedReference("items")
     private Set<OrderItem> items = new HashSet<>();
+    @OneToOne(mappedBy = "order", cascade = jakarta.persistence.CascadeType.ALL)
+    private Payment payment;
     
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant moment;
