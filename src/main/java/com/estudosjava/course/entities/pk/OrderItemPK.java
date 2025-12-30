@@ -3,7 +3,6 @@ package com.estudosjava.course.entities.pk;
 import com.estudosjava.course.entities.Order;
 import com.estudosjava.course.entities.Product;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
