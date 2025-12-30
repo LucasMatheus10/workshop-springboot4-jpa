@@ -39,7 +39,7 @@ public class Order implements java.io.Serializable {
     private User client;
    
     @OneToMany(mappedBy = "id.order")
-    @JsonManagedReference
+    @JsonManagedReference("items")
     private Set<OrderItem> items = new HashSet<>();
     
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
