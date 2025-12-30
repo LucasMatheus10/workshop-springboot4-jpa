@@ -1,6 +1,7 @@
 package com.estudosjava.course.entities;
 
 import com.estudosjava.course.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -21,7 +22,7 @@ public class OrderItem implements java.io.Serializable {
 
     @EqualsAndHashCode.Include
     @EmbeddedId
-    private OrderItemPK id;
+    private OrderItemPK id = new OrderItemPK();
     private Integer quantity;
     private Double price;
 
@@ -32,6 +33,7 @@ public class OrderItem implements java.io.Serializable {
         this.price = price;
     }
 
+    @JsonBackReference
     public Order getOrder() {
         return id.getOrder();
     }
