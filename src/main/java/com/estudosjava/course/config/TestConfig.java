@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.estudosjava.course.entities.Category;
 import com.estudosjava.course.entities.Order;
+import com.estudosjava.course.entities.OrderItem;
 import com.estudosjava.course.entities.Product;
 import com.estudosjava.course.entities.User;
 import com.estudosjava.course.entities.enums.OrderStatus;
 import com.estudosjava.course.repositories.CategoryRepository;
+import com.estudosjava.course.repositories.OrderItemRepository;
 import com.estudosjava.course.repositories.OrderRepository;
 import com.estudosjava.course.repositories.ProductRepository;
 import com.estudosjava.course.repositories.UserRepository;
@@ -33,6 +35,9 @@ public class TestConfig implements CommandLineRunner{
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -63,5 +68,12 @@ public class TestConfig implements CommandLineRunner{
         productRepository.saveAll(Arrays.asList(product1, product2, product3, product4, product5));
         userRepository.saveAll(Arrays.asList(user, user2));
         orderRepository.saveAll(Arrays.asList(order1, order2, order3));
+
+        OrderItem orderItem1 = new OrderItem(order1, product1, 2, product1.getPrice());
+        OrderItem orderItem2 = new OrderItem(order1, product3, 1, product3.getPrice());
+        OrderItem orderItem3 = new OrderItem(order2, product3, 2, product3.getPrice());
+        OrderItem orderItem4 = new OrderItem(order3, product5, 2,   product5.getPrice());
+
+        orderItemRepository.saveAll(Arrays.asList(orderItem1, orderItem2, orderItem3, orderItem4)); 
     }
 }
