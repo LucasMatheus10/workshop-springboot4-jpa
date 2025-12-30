@@ -2,6 +2,8 @@ package com.estudosjava.course.entities;
 
 import com.estudosjava.course.entities.pk.OrderItemPK;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -33,7 +35,7 @@ public class OrderItem implements java.io.Serializable {
         this.price = price;
     }
 
-    @JsonBackReference
+    @JsonBackReference("items")
     public Order getOrder() {
         return id.getOrder();
     }
