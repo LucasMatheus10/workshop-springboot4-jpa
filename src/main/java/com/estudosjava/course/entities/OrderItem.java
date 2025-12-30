@@ -49,4 +49,7 @@ public class OrderItem implements java.io.Serializable {
         id.setProduct(product);
     }
 
+    public Double getSubTotal() {
+        return price * quantity;
+    }
 }
