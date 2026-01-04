@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.estudosjava.course.dto.UserDTO;
 import com.estudosjava.course.dto.UserInsertDTO;
+import com.estudosjava.course.dto.UserOrdersDTO;
 import com.estudosjava.course.services.UserServices;
 
 import jakarta.validation.Valid;
@@ -34,8 +35,8 @@ public class UserResource {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
-        UserDTO obj = service.findById(id);
+    public ResponseEntity<UserOrdersDTO> findById(@PathVariable Long id) {
+        UserOrdersDTO obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
