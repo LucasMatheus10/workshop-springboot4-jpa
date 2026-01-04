@@ -7,6 +7,8 @@ import com.estudosjava.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,7 +33,7 @@ public class Order implements java.io.Serializable {
 
     @EqualsAndHashCode.Include
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne
@@ -47,12 +49,13 @@ public class Order implements java.io.Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant moment;
 
-    private Integer orderStatus;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
 
     public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
         this.id = id;
         this.moment = moment;
-        setOrderStatus(orderStatus);
+        this.orderStatus = orderStatus;
         this.client = client;
     }
 
@@ -61,13 +64,11 @@ public class Order implements java.io.Serializable {
     }
 
     public OrderStatus getOrderStatus() {
-        return OrderStatus.valueOf(orderStatus);
+        return orderStatus;
     }
 
     public void setOrderStatus(OrderStatus orderStatus) {
-        if (orderStatus != null) {
-            this.orderStatus = orderStatus.getCode();
-        }
+        this.orderStatus = orderStatus;
     }
 
     public Double getTotal() {
