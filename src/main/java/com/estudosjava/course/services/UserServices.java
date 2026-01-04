@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.estudosjava.course.dto.UserDTO;
 import com.estudosjava.course.dto.UserInsertDTO;
+import com.estudosjava.course.dto.UserOrdersDTO;
 import com.estudosjava.course.entities.User;
 import com.estudosjava.course.repositories.UserRepository;
 import com.estudosjava.course.services.exceptions.DatabaseException;
@@ -27,9 +28,9 @@ public class UserServices {
     }
 
     @Transactional(readOnly = true)
-    public UserDTO findById(Long id) {
+    public UserOrdersDTO findById(Long id) {
         User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-        return new UserDTO(user);
+        return new UserOrdersDTO(user);
     }
 
     @Transactional
