@@ -3,8 +3,6 @@ package com.estudosjava.course.entities;
 import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -27,7 +25,7 @@ public class Payment implements java.io.Serializable {
 
     @EqualsAndHashCode.Include
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.SEQUENCE)
     private Long id;
     private Instant moment;
     @OneToOne

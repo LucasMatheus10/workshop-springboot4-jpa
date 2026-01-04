@@ -29,7 +29,7 @@ public class Product implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.SEQUENCE)
     @EqualsAndHashCode.Include
     private Long id;
     private String name;
