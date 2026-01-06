@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.estudosjava.course.dto.UserDTO;
 import com.estudosjava.course.dto.UserInsertDTO;
 import com.estudosjava.course.dto.UserOrdersDTO;
+import com.estudosjava.course.dto.UserUpdateDTO;
 import com.estudosjava.course.services.UserServices;
 
 import jakarta.validation.Valid;
@@ -55,7 +56,7 @@ public class UserResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto) {
         UserDTO newDto = service.update(id, dto);
         return ResponseEntity.ok().body(newDto);
     }

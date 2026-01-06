@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.estudosjava.course.dto.UserDTO;
 import com.estudosjava.course.dto.UserInsertDTO;
 import com.estudosjava.course.dto.UserOrdersDTO;
+import com.estudosjava.course.dto.UserUpdateDTO;
 import com.estudosjava.course.entities.User;
 import com.estudosjava.course.repositories.UserRepository;
 import com.estudosjava.course.services.exceptions.DatabaseException;
@@ -54,7 +55,7 @@ public class UserServices {
     }
 
     @Transactional
-    public UserDTO update(Long id, UserDTO dto) {
+    public UserDTO update(Long id, UserUpdateDTO dto) {
         try {
             User user = repository.getReferenceById(id);
             updateData(user, dto);
@@ -72,9 +73,15 @@ public class UserServices {
         entity.setPassword(obj.password());
     }
 
-    private void updateData(User user, UserDTO dto) {
-        user.setName(dto.name());
-        user.setEmail(dto.email());
-        user.setPhone(dto.phone());
+    private void updateData(User user, UserUpdateDTO dto) {
+        if (dto.name() != null) {
+            user.setName(dto.name());
+        }
+        if (dto.email() != null) {
+            user.setEmail(dto.email());
+        }
+        if (dto.phone() != null) {
+            user.setPhone(dto.phone());
+        }
     }
 }
