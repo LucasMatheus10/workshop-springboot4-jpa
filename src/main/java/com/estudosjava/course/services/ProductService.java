@@ -2,6 +2,8 @@ package com.estudosjava.course.services;
 
 import java.util.List;
 import com.estudosjava.course.dto.ProductDTO;
+import com.estudosjava.course.dto.ProductInsertDTO;
+import com.estudosjava.course.dto.ProductUpdateDTO;
 import com.estudosjava.course.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -35,7 +37,7 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO insert(ProductDTO dto) {
+    public ProductDTO insert(ProductInsertDTO dto) {
         Product product = new Product();
         loadData(product, dto);
         product = repository.save(product);
@@ -55,10 +57,10 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO update(Long id, ProductDTO dto) {
+    public ProductDTO update(Long id, ProductUpdateDTO dto) {
         try {
             Product product = repository.getReferenceById(id);
-            loadData(product, dto);
+            updateData(product, dto);
             product = repository.save(product);
             return new ProductDTO(product);
         } catch (EntityNotFoundException e) {
@@ -66,7 +68,7 @@ public class ProductService {
         }
     }
 
-    public void loadData(Product product, ProductDTO dto) {
+    public void loadData(Product product, ProductInsertDTO dto) {
         product.setName(dto.name());
         product.setDescription(dto.description());
         product.setPrice(dto.price());
@@ -77,5 +79,26 @@ public class ProductService {
                 product.getCategories().add(categoryRepository.getReferenceById(catDto.id()));
             });
         }
+    }
+
+    public void updateData(Product product, ProductUpdateDTO dto) {
+        if (dto.name() != null) {
+            product.setName(dto.name());
+        }
+        if (dto.description() != null) {
+            product.setDescription(dto.description());
+        }
+        if (dto.price() != null) {
+            product.setPrice(dto.price());
+        }
+        if (dto.imgUrl() != null) {
+            product.setImgUrl(dto.imgUrl());
+        }
+        if (dto.categories() != null) {
+        product.getCategories().clear();
+        dto.categories().forEach(catDto -> {
+            product.getCategories().add(categoryRepository.getReferenceById(catDto.id()));
+        });
+    }
     }
 }
