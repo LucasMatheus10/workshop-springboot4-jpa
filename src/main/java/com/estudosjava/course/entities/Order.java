@@ -20,13 +20,11 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "tb_order")
 public class Order implements java.io.Serializable {
@@ -47,15 +45,19 @@ public class Order implements java.io.Serializable {
     private Payment payment;
     
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
-    private Instant moment;
+    private Instant moment = Instant.now();
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    private OrderStatus orderStatus = OrderStatus.WAITING_PAYMENT;
+
+    public Order(){
+        this.orderStatus = OrderStatus.WAITING_PAYMENT;
+    }
 
     public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
         this.id = id;
-        this.moment = moment;
-        this.orderStatus = orderStatus;
+        this.moment = moment != null ? moment : Instant.now();
+        this.orderStatus = orderStatus != null ? orderStatus : OrderStatus.WAITING_PAYMENT;
         this.client = client;
     }
 
@@ -78,4 +80,5 @@ public class Order implements java.io.Serializable {
         }
         return sum;
     }
+    
 }

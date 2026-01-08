@@ -1,5 +1,6 @@
 package com.estudosjava.course.services;
 
+import java.time.Instant;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +9,6 @@ import com.estudosjava.course.dto.OrderInsertDTO;
 import com.estudosjava.course.dto.OrderItemDTO;
 import com.estudosjava.course.dto.OrderStatusDTO;
 import com.estudosjava.course.dto.OrderSummaryDTO;
-import com.estudosjava.course.dto.PaymentDTO;
 import com.estudosjava.course.entities.Order;
 import com.estudosjava.course.entities.OrderItem;
 import com.estudosjava.course.entities.Payment;
@@ -52,8 +52,6 @@ public class OrderServices {
     @Transactional
     public OrderDTO insert(OrderInsertDTO dto) {
         Order order = new Order();
-        order.setMoment(dto.moment());
-        order.setOrderStatus(dto.orderStatus());
         User client = userRepository.getReferenceById(dto.clientId());
         order.setClient(client);
         order = orderRepository.save(order);
@@ -96,7 +94,7 @@ public class OrderServices {
     }
 
     @Transactional
-    public OrderDTO setPayment(Long orderId, PaymentDTO paymentDto) {
+    public OrderDTO setPayment(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException(orderId));
 
@@ -108,7 +106,7 @@ public class OrderServices {
             throw new DatabaseException("Pagamento não permitido para o status: " + order.getOrderStatus());
         }
 
-        Payment pay = new Payment(null, paymentDto.moment(), order);
+        Payment pay = new Payment(null, Instant.now(), order);
         order.setPayment(pay);
         order.setOrderStatus(OrderStatus.PAID);
         
