@@ -11,10 +11,12 @@ import com.estudosjava.course.entities.Order;
 import com.estudosjava.course.entities.OrderItem;
 import com.estudosjava.course.entities.Product;
 import com.estudosjava.course.entities.User;
+import com.estudosjava.course.entities.enums.OrderStatus;
 import com.estudosjava.course.repositories.OrderItemRepository;
 import com.estudosjava.course.repositories.OrderRepository;
 import com.estudosjava.course.repositories.ProductRepository;
 import com.estudosjava.course.repositories.UserRepository;
+import com.estudosjava.course.services.exceptions.DatabaseException;
 import com.estudosjava.course.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -68,6 +70,23 @@ public class OrderServices {
         try {
             Order entity = repository.getReferenceById(id);
             entity.setOrderStatus(status.orderStatus());
+            entity = repository.save(entity);
+            return new OrderDTO(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
+    }
+
+    @Transactional
+    public OrderDTO cancel(Long id) {
+        try {
+            Order entity = repository.getReferenceById(id);
+            
+            if (entity.getOrderStatus() != OrderStatus.WAITING_PAYMENT) {
+                throw new DatabaseException("Não é possível cancelar um pedido que já foi processado ou pago.");
+            }
+
+            entity.setOrderStatus(OrderStatus.CANCELED);
             entity = repository.save(entity);
             return new OrderDTO(entity);
         } catch (EntityNotFoundException e) {
