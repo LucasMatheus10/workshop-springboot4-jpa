@@ -28,8 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderServices {
 
     @Autowired
-    private OrderRepository repository;
-    @Autowired
     private UserRepository userRepository;
     @Autowired
     private OrderRepository orderRepository;
@@ -39,13 +37,13 @@ public class OrderServices {
     private OrderItemRepository orderItemRepository;
 
     public List<OrderSummaryDTO> findAll() {
-        List<Order> orders = repository.findAll();
+        List<Order> orders = orderRepository.findAll();
         return orders.stream().map(OrderSummaryDTO::new).toList();
     }
 
     @Transactional(readOnly = true)
     public OrderDTO findById(Long id) {
-        Order order = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
         return new OrderDTO(order);
     }
 
@@ -56,7 +54,7 @@ public class OrderServices {
         order.setOrderStatus(dto.orderStatus());
         User client = userRepository.getReferenceById(dto.clientId());
         order.setClient(client);
-        order = repository.save(order);
+        order = orderRepository.save(order);
 
         for (OrderItemDTO itemDto : dto.items()) {
             Product product = productRepository.getReferenceById(itemDto.productId());
@@ -69,9 +67,9 @@ public class OrderServices {
 
     public OrderDTO update(Long id, OrderStatusDTO status) {
         try {
-            Order entity = repository.getReferenceById(id);
+            Order entity = orderRepository.getReferenceById(id);
             entity.setOrderStatus(status.orderStatus());
-            entity = repository.save(entity);
+            entity = orderRepository.save(entity);
             return new OrderDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(id);
@@ -81,14 +79,14 @@ public class OrderServices {
     @Transactional
     public OrderDTO cancel(Long id) {
         try {
-            Order entity = repository.getReferenceById(id);
+            Order entity = orderRepository.getReferenceById(id);
             
             if (entity.getOrderStatus() != OrderStatus.WAITING_PAYMENT) {
                 throw new DatabaseException("Não é possível cancelar um pedido que já foi processado ou pago.");
             }
 
             entity.setOrderStatus(OrderStatus.CANCELED);
-            entity = repository.save(entity);
+            entity = orderRepository.save(entity);
             return new OrderDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(id);
