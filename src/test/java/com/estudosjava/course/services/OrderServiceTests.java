@@ -84,7 +84,6 @@ public class OrderServiceTests {
         OrderDTO result = service.insert(insertDTO);
 
         assertNotNull(result);
-        // Valida se o total calculado (2 * 2000.0) está correto
         assertEquals(4000.0, result.total());
         verify(orderItemRepository, times(1)).save(any());
         verify(repository, times(1)).save(any());
