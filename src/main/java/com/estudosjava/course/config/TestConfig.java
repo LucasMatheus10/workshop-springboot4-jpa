@@ -23,7 +23,7 @@ import com.estudosjava.course.repositories.UserRepository;
 
 @Configuration
 @Profile("test")
-public class TestConfig implements CommandLineRunner{
+public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private UserRepository userRepository;
@@ -42,44 +42,53 @@ public class TestConfig implements CommandLineRunner{
 
     @Override
     public void run(String... args) throws Exception {
-        Category category1 = new Category(null, "Electronics");
-        Category category2 = new Category(null, "Books");
-        Category category3 = new Category(null, "Clothing");
+        
+        // Categorias e Produtos permanecem iguais
+        Category cat1 = new Category(null, "Electronics");
+        Category cat2 = new Category(null, "Books");
+        Category cat3 = new Category(null, "Clothing");
 
-        Product product1 = new Product(null, "The Lord of the Rings", "A fantasy novel", 90.5, "");
-        Product product2 = new Product(null, "Smart TV", "42 inch smart TV", 2190.0, "");
-        Product product3 = new Product(null, "Macbook Pro", "Apple laptop", 1250.0, "");
-        Product product4 = new Product(null, "PC Gamer", "High performance gaming PC", 1200.0, "");
-        Product product5 = new Product(null, "Rails for Dummies", "A beginner's guide to Rails", 100.99, "");
+        Product p1 = new Product(null, "The Lord of the Rings", "A fantasy novel", 90.5, "");
+        Product p2 = new Product(null, "Smart TV", "42 inch smart TV", 2190.0, "");
+        Product p3 = new Product(null, "Macbook Pro", "Apple laptop", 1250.0, "");
+        Product p4 = new Product(null, "PC Gamer", "High performance gaming PC", 1200.0, "");
+        Product p5 = new Product(null, "Rails for Dummies", "A beginner's guide to Rails", 100.99, "");
 
-        product1.getCategories().add(category2);
-        product2.getCategories().add(category1);
-        product3.getCategories().add(category1);
-        product4.getCategories().add(category1);
-        product5.getCategories().add(category2);
+        categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
+        productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 
-        User user = new User(null, "John Doe", "john.doe@email.com", "1234567890", "password");
-        User user2 = new User(null, "Jane Smith", "jane.smith@email.com", "0987654321", "password123");
+        p1.getCategories().add(cat2);
+        p2.getCategories().add(cat1);
+        p3.getCategories().add(cat1);
+        p4.getCategories().add(cat1);
+        p5.getCategories().add(cat2);
 
-        Order order1 = new Order(null, Instant.parse("2019-06-01T10:00:00Z"), OrderStatus.WAITING_PAYMENT, user);
-        Order order2 = new Order(null, Instant.parse("2024-06-02T11:30:00Z"), OrderStatus.PAID, user2);
-        Order order3 = new Order(null, Instant.parse("2024-06-03T14:15:00Z"), OrderStatus.SHIPPED, user);
+        productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 
-        categoryRepository.saveAll(Arrays.asList(category1, category2, category3));
-        productRepository.saveAll(Arrays.asList(product1, product2, product3, product4, product5));
-        userRepository.saveAll(Arrays.asList(user, user2));
-        orderRepository.saveAll(Arrays.asList(order1, order2, order3));
+        User u1 = new User(null, "John Doe", "john.doe@email.com", "1234567890", "password");
+        User u2 = new User(null, "Jane Smith", "jane.smith@email.com", "0987654321", "password123");
 
-        OrderItem orderItem1 = new OrderItem(order1, product1, 2, product1.getPrice());
-        OrderItem orderItem2 = new OrderItem(order1, product3, 1, product3.getPrice());
-        OrderItem orderItem3 = new OrderItem(order2, product3, 2, product3.getPrice());
-        OrderItem orderItem4 = new OrderItem(order3, product5, 2,   product5.getPrice());
+        userRepository.saveAll(Arrays.asList(u1, u2));
 
-        orderItemRepository.saveAll(Arrays.asList(orderItem1, orderItem2, orderItem3, orderItem4));
+        Order o1 = new Order();
+        o1.setClient(u1);
+        
+        Order o2 = new Order(null, Instant.parse("2024-06-02T11:30:00Z"), OrderStatus.WAITING_PAYMENT, u2);
+        Order o3 = new Order(null, Instant.parse("2024-06-03T14:15:00Z"), OrderStatus.SHIPPED, u1);
 
-        Payment payment1 = new Payment(null, Instant.parse("2019-06-01T12:00:00Z"), order1);
-        order1.setPayment(payment1);
-        order1.setOrderStatus(OrderStatus.PAID);
-        orderRepository.save(order1);
+        orderRepository.saveAll(Arrays.asList(o1, o2, o3));
+
+        OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+        OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+        OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+        OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
+
+        orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+
+        Payment pay1 = new Payment(null, Instant.now(), o1);
+        o1.setPayment(pay1);
+        o1.setOrderStatus(OrderStatus.PAID);
+
+        orderRepository.save(o1);
     }
 }
