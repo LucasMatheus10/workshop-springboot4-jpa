@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.estudosjava.course.dto.OrderDTO;
 import com.estudosjava.course.dto.OrderInsertDTO;
 import com.estudosjava.course.dto.OrderStatusDTO;
+import com.estudosjava.course.dto.OrderSummaryDTO;
 import com.estudosjava.course.services.OrderServices;
 
 import jakarta.validation.Valid;
@@ -30,8 +31,8 @@ public class OrderResource {
     private OrderServices service;
 
     @GetMapping
-    public ResponseEntity<List<OrderDTO>> findAll() {
-        List<OrderDTO> list =  service.findAll();
+    public ResponseEntity<List<OrderSummaryDTO>> findAll() {
+        List<OrderSummaryDTO> list =  service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
@@ -60,5 +61,5 @@ public class OrderResource {
         OrderDTO dto = service.cancel(id);
         return ResponseEntity.ok().body(dto);
     }
-    
+
 }

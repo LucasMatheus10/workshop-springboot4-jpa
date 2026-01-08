@@ -7,6 +7,7 @@ import com.estudosjava.course.dto.OrderDTO;
 import com.estudosjava.course.dto.OrderInsertDTO;
 import com.estudosjava.course.dto.OrderItemDTO;
 import com.estudosjava.course.dto.OrderStatusDTO;
+import com.estudosjava.course.dto.OrderSummaryDTO;
 import com.estudosjava.course.entities.Order;
 import com.estudosjava.course.entities.OrderItem;
 import com.estudosjava.course.entities.Product;
@@ -37,9 +38,9 @@ public class OrderServices {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
-    public List<OrderDTO> findAll() {
+    public List<OrderSummaryDTO> findAll() {
         List<Order> orders = repository.findAll();
-        return orders.stream().map(OrderDTO::new).toList();
+        return orders.stream().map(OrderSummaryDTO::new).toList();
     }
 
     @Transactional(readOnly = true)
