@@ -8,8 +8,10 @@ import com.estudosjava.course.dto.OrderInsertDTO;
 import com.estudosjava.course.dto.OrderItemDTO;
 import com.estudosjava.course.dto.OrderStatusDTO;
 import com.estudosjava.course.dto.OrderSummaryDTO;
+import com.estudosjava.course.dto.PaymentDTO;
 import com.estudosjava.course.entities.Order;
 import com.estudosjava.course.entities.OrderItem;
+import com.estudosjava.course.entities.Payment;
 import com.estudosjava.course.entities.Product;
 import com.estudosjava.course.entities.User;
 import com.estudosjava.course.entities.enums.OrderStatus;
@@ -91,5 +93,27 @@ public class OrderServices {
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(id);
         }
+    }
+
+    @Transactional
+    public OrderDTO setPayment(Long orderId, PaymentDTO paymentDto) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException(orderId));
+
+        if (order.getPayment() != null) {
+            throw new DatabaseException("Este pedido já possui um pagamento registrado.");
+        }
+
+        if (order.getOrderStatus() != OrderStatus.WAITING_PAYMENT) {
+            throw new DatabaseException("Pagamento não permitido para o status: " + order.getOrderStatus());
+        }
+
+        Payment pay = new Payment(null, paymentDto.moment(), order);
+        order.setPayment(pay);
+        order.setOrderStatus(OrderStatus.PAID);
+        
+        order = orderRepository.save(order);
+        
+        return new OrderDTO(order);
     }
 }

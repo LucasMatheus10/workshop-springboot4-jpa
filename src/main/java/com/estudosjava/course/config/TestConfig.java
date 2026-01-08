@@ -79,6 +79,7 @@ public class TestConfig implements CommandLineRunner{
 
         Payment payment1 = new Payment(null, Instant.parse("2019-06-01T12:00:00Z"), order1);
         order1.setPayment(payment1);
+        order1.setOrderStatus(OrderStatus.PAID);
         orderRepository.save(order1);
     }
 }

@@ -11,6 +11,7 @@ import com.estudosjava.course.dto.OrderDTO;
 import com.estudosjava.course.dto.OrderInsertDTO;
 import com.estudosjava.course.dto.OrderStatusDTO;
 import com.estudosjava.course.dto.OrderSummaryDTO;
+import com.estudosjava.course.dto.PaymentDTO;
 import com.estudosjava.course.services.OrderServices;
 
 import jakarta.validation.Valid;
@@ -60,6 +61,12 @@ public class OrderResource {
     public ResponseEntity<OrderDTO> cancel(@PathVariable Long id) {
         OrderDTO dto = service.cancel(id);
         return ResponseEntity.ok().body(dto);
+    }
+
+    @PutMapping(value = "/{id}/payment")
+    public ResponseEntity<OrderDTO> setPayment(@PathVariable Long id, @Valid @RequestBody PaymentDTO dto) {
+        OrderDTO newDto = service.setPayment(id, dto);
+        return ResponseEntity.ok().body(newDto);
     }
 
 }
