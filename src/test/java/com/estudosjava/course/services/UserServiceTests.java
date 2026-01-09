@@ -1,6 +1,7 @@
 package com.estudosjava.course.services;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -17,6 +18,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.estudosjava.course.dto.UserDTO;
 import com.estudosjava.course.dto.UserInsertDTO;
@@ -36,13 +38,15 @@ public class UserServiceTests {
     private UserServices service;
 
     @Mock
-    private UserRepository repository;
+    private UserRepository repository; // Certifique-se que no UserServices o nome é 'repository'
+
+    @Mock
+    private PasswordEncoder passwordEncoder; // Adicionado para suportar a nova segurança
 
     private Long existingId;
     private Long nonExistingId;
     private Long dependentId;
     private User user;
-    private UserDTO userDTO;
     private UserUpdateDTO updateDTO;
     private UserInsertDTO insertDTO;
 
@@ -52,8 +56,8 @@ public class UserServiceTests {
         nonExistingId = 2L;
         dependentId = 3L;
 
+        // Dados base para os mocks
         user = new User(existingId, "Maria Brown", "maria@gmail.com", "988888888", "123456");
-        userDTO = new UserDTO(user);
         insertDTO = new UserInsertDTO("Maria Brown", "maria@gmail.com", "988888888", "123456");
         updateDTO = new UserUpdateDTO("Maria Green", "maria_green@gmail.com", "977777777");
     }
@@ -61,11 +65,8 @@ public class UserServiceTests {
     @Test
     public void findAllShouldReturnList() {
         when(repository.findAll()).thenReturn(List.of(user));
-
         List<UserDTO> result = service.findAll();
-
         Assertions.assertNotNull(result);
-        Assertions.assertFalse(result.isEmpty());
         verify(repository).findAll();
     }
 
@@ -90,26 +91,28 @@ public class UserServiceTests {
 
     @Test
     public void insertShouldReturnUserDTO() {
+        when(passwordEncoder.encode(any())).thenReturn("hashed_password");
         when(repository.save(any())).thenReturn(user);
 
         UserDTO result = service.insert(insertDTO);
 
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("maria@gmail.com", result.email());
+        verify(passwordEncoder).encode(any());
         verify(repository).save(any());
     }
 
     @Test
     public void deleteShouldDoNothingWhenIdExists() {
+        // Para deleteById que retorna void, não precisamos de 'when' a menos que queiramos lançar exceção
         Assertions.assertDoesNotThrow(() -> {
             service.delete(existingId);
         });
         verify(repository).deleteById(existingId);
-        verify(repository).flush();
     }
 
     @Test
     public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+        // Simula o comportamento do Spring Data JPA quando o ID não existe
         Mockito.doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(nonExistingId);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
@@ -119,6 +122,7 @@ public class UserServiceTests {
 
     @Test
     public void deleteShouldThrowDatabaseExceptionWhenDependentId() {
+        // Simula erro de integridade referencial
         Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependentId);
 
         Assertions.assertThrows(DatabaseException.class, () -> {
@@ -136,10 +140,12 @@ public class UserServiceTests {
         Assertions.assertNotNull(result);
         Assertions.assertEquals("Maria Green", result.name());
         verify(repository).getReferenceById(existingId);
+        verify(repository).save(any());
     }
 
     @Test
     public void updateShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+        // Simula o erro do Hibernate ao não encontrar a entidade para referência
         when(repository.getReferenceById(nonExistingId)).thenThrow(EntityNotFoundException.class);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {

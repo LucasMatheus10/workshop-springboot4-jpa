@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import com.estudosjava.course.entities.Category;
 import com.estudosjava.course.entities.Order;
 import com.estudosjava.course.entities.OrderItem;
@@ -26,6 +26,8 @@ import com.estudosjava.course.repositories.UserRepository;
 public class TestConfig implements CommandLineRunner {
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -43,7 +45,6 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         
-        // Categorias e Produtos permanecem iguais
         Category cat1 = new Category(null, "Electronics");
         Category cat2 = new Category(null, "Books");
         Category cat3 = new Category(null, "Clothing");
@@ -65,8 +66,8 @@ public class TestConfig implements CommandLineRunner {
 
         productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 
-        User u1 = new User(null, "John Doe", "john.doe@email.com", "1234567890", "password");
-        User u2 = new User(null, "Jane Smith", "jane.smith@email.com", "0987654321", "password123");
+        User u1 = new User(null, "John Doe", "john.doe@email.com", "1234567890", passwordEncoder.encode("password"));
+        User u2 = new User(null, "Jane Smith", "jane.smith@email.com", "0987654321", passwordEncoder.encode("password123"));
 
         userRepository.saveAll(Arrays.asList(u1, u2));
 

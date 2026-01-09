@@ -1,6 +1,11 @@
 package com.estudosjava.course.entities;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,9 +27,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tb_user")
-public class User implements java.io.Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class User implements UserDetails{
 
     @EqualsAndHashCode.Include
     @Id
@@ -33,6 +36,7 @@ public class User implements java.io.Serializable {
     private String name;
     private String email;
     private String phone;
+    @JsonIgnore
     private String password;
 
     @JsonIgnore
@@ -50,4 +54,35 @@ public class User implements java.io.Serializable {
         this.phone = phone;
         this.password = password;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+    
 }
