@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.estudosjava.course.dto.UserDTO;
@@ -20,8 +21,14 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class UserServices {
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
     private UserRepository repository;
+
+    UserServices(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public List<UserDTO> findAll() {
         List<User> list = repository.findAll();
@@ -70,7 +77,7 @@ public class UserServices {
         entity.setName(obj.name());
         entity.setEmail(obj.email());
         entity.setPhone(obj.phone());
-        entity.setPassword(obj.password());
+        entity.setPassword(passwordEncoder.encode(obj.password()));
     }
 
     private void updateData(User user, UserUpdateDTO dto) {
