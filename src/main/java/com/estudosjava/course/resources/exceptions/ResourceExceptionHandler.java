@@ -4,6 +4,7 @@ import java.time.Instant;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -49,5 +50,13 @@ public class ResourceExceptionHandler {
         }
         
         return ResponseEntity.status(statusValue).body(err);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<StandardError> badCredentials(BadCredentialsException e, HttpServletRequest request) {
+        String error = "Erro de autenticação";
+        HttpStatus status = HttpStatus.UNAUTHORIZED; // 401
+        StandardError err = new StandardError(Instant.now(), status.value(), error, "E-mail ou senha inválidos", request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
     }
 }
