@@ -22,7 +22,8 @@ jobs:
         cache: maven
 
     - name: Permission for mvnw
-      run: chmod +x mvnw
+      run: chmod +x ./backend/mvnw
       
     - name: Build and Test with Maven
-      run: ./mvnw clean test
+      working-directory: ./backend
+      run: ./mvnw clean verify
