@@ -82,4 +82,43 @@ public class AuthenticationIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray()); // Verifica se retornou a lista de usuários
     }
+
+    @Test
+    public void insertUserShouldReturnCreatedWhenDataIsValid() throws Exception {
+        String newUserJson = "{\"name\":\"Testador\", \"email\":\"testador@empresa.com\", \"phone\":\"123456789\", \"password\":\"senha123\"}";
+
+        mockMvc.perform(post("/users")
+                .content(newUserJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()) // UserResource retorna 201 Created
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.name").value("Testador"));
+    }
+
+    @Test
+    public void insertUserShouldReturnBadRequestWhenDataIsInvalid() throws Exception {
+        // Cenário: Nome vazio e email mal formatado
+        String invalidUserJson = "{\"name\":\"\", \"email\":\"email-invalido\", \"phone\":\"123\", \"password\":\"1\"}";
+
+        mockMvc.perform(post("/users")
+                .content(invalidUserJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()) 
+                .andExpect(jsonPath("$.errors").isArray())
+                // Verifica se o seu ResourceExceptionHandler mapeou os campos corretamente
+                .andExpect(jsonPath("$.errors[?(@.fieldName=='email')]").exists())
+                .andExpect(jsonPath("$.errors[?(@.fieldName=='name')]").exists());
+    }
+
+    @Test
+    public void insertUserShouldReturnBadRequestWhenPasswordIsTooShort() throws Exception {
+        // Cenário: Senha curta
+        String shortPasswordJson = "{\"name\":\"Teste\", \"email\":\"testes@gmail.com\", \"phone\":\"123\", \"password\":\"123\"}";
+
+        mockMvc.perform(post("/users")
+                .content(shortPasswordJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors[?(@.fieldName=='password')]").exists());
+    }
 }

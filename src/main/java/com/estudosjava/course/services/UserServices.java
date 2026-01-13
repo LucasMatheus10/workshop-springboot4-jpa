@@ -2,7 +2,6 @@ package com.estudosjava.course.services;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,9 +21,7 @@ import jakarta.persistence.EntityNotFoundException;
 public class UserServices {
 
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
 
     UserServices(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
