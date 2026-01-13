@@ -27,7 +27,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tb_user")
-public class User implements UserDetails{
+public class User implements UserDetails {
 
     @EqualsAndHashCode.Include
     @Id
@@ -63,6 +63,11 @@ public class User implements UserDetails{
     @Override
     public String getUsername() {
         return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     @Override
