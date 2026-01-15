@@ -14,7 +14,8 @@ import com.estudosjava.course.dto.OrderSummaryDTO;
 import com.estudosjava.course.services.OrderServices;
 
 import jakarta.validation.Valid;
-
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,24 +26,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping(value = "/orders")
+@Tag(name = "Pedidos", description = "Gerenciador de pedidos")
 public class OrderResource {
     
     @Autowired
     private OrderServices service;
 
     @GetMapping
+    @Operation(summary = "Buscar pedidos", description = "Busca todos os pedidos cadastrados no sistema")
     public ResponseEntity<List<OrderSummaryDTO>> findAll() {
         List<OrderSummaryDTO> list =  service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
+    @Operation(summary = "Buscar pedido", description = "Busca o pedido desejado passando o id do pedido")
     public ResponseEntity<OrderDTO> findById(@PathVariable Long id) {
         OrderDTO obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
+    @Operation(summary = "Inserir pedido", description = "Cadastra um novo pedido no sistema")
     public ResponseEntity<OrderDTO> insert(@Valid @RequestBody OrderInsertDTO dto) {
         OrderDTO newDto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -51,18 +56,21 @@ public class OrderResource {
     }
 
     @PutMapping(value = "/{id}")
+    @Operation(summary = "Atualizar pedido", description = "Atualiza o pedido desejado passando o id do pedido e os atributos que se deseja atualizar")
     public ResponseEntity<OrderDTO> update(@PathVariable Long id, @Valid @RequestBody OrderStatusDTO dto) {
         OrderDTO newDto = service.update(id, dto);
         return ResponseEntity.ok().body(newDto);
     }
 
     @PutMapping(value = "/{id}/cancel")
+    @Operation(summary = "Cancelar pedido", description = "Cancela o pedido desejado passando o id através da mudança do atributo status para CANCELED")
     public ResponseEntity<OrderDTO> cancel(@PathVariable Long id) {
         OrderDTO dto = service.cancel(id);
         return ResponseEntity.ok().body(dto);
     }
 
     @PutMapping(value = "/{id}/payment")
+    @Operation(summary = "Fazer pagamento", description = "Adiciona um pagamento ao pedido e muda o status pra PAID")
     public ResponseEntity<OrderDTO> setPayment(@PathVariable Long id) {
         OrderDTO newDto = service.setPayment(id);
         return ResponseEntity.ok().body(newDto);
