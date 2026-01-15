@@ -1,0 +1,7 @@
+.register-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+}
+.card {
+  border-radius: 15px;
+}
