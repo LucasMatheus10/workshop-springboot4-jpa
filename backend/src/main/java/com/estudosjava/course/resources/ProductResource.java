@@ -18,29 +18,34 @@ import com.estudosjava.course.dto.ProductDTO;
 import com.estudosjava.course.dto.ProductInsertDTO;
 import com.estudosjava.course.dto.ProductUpdateDTO;
 import com.estudosjava.course.services.ProductService;
-
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/products")
+@Tag(name = "Produtos", description = "Gerenciador de produtos")
 public class ProductResource {
 
     @Autowired
     private ProductService service;
 
     @GetMapping
+    @Operation(summary = "Buscar produtos", description = "Busca todos os produtos cadastrados no sistema")
     public ResponseEntity<List<ProductDTO>> findAll() {
         List<ProductDTO> list =  service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
+    @Operation(summary = "Buscar produto", description = "Busca o produto desejado passando o id do produto")
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
         ProductDTO obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
+    @Operation(summary = "Inserir produto", description = "Cadastra um novo produto no sistema")
     public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductInsertDTO dto) {
         ProductDTO newDto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -49,12 +54,14 @@ public class ProductResource {
     }
     
     @DeleteMapping(value = "/{id}")
+    @Operation(summary = "Remover produto", description = "Remove o produto desejado passando o id do produto e os atributos que se deseja atualizar")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")
+    @Operation(summary = "Atualizar produto", description = "Atualiza o produto desejado passando o id do produto e os atributos que se deseja atualizar")
     public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductUpdateDTO dto) {
         ProductDTO newDto = service.update(id, dto);
         return ResponseEntity.ok().body(newDto);
