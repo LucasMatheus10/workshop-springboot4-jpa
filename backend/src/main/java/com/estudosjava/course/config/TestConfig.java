@@ -50,7 +50,7 @@ public class TestConfig implements CommandLineRunner {
         Category cat3 = new Category(null, "Clothing");
 
         Product p1 = new Product(null, "The Lord of the Rings", "A fantasy novel", 90.5, "");
-        Product p2 = new Product(null, "Smart TV", "42 inch smart TV", 2190.0, "");
+        Product p2 = new Product(null, "Smart TV", "42 inch smart TV", 2190.0, "https://www.hisense.com.br/_next/image?url=%2FA4N%2F1.png&w=2048&q=100");
         Product p3 = new Product(null, "Macbook Pro", "Apple laptop", 1250.0, "");
         Product p4 = new Product(null, "PC Gamer", "High performance gaming PC", 1200.0, "");
         Product p5 = new Product(null, "Rails for Dummies", "A beginner's guide to Rails", 100.99, "");
