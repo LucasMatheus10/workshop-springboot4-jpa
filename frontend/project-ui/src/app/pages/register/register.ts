@@ -9,7 +9,7 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
-export class Register {
+export class RegisterComponent {
   userData = {
     name: '',
     email: '',

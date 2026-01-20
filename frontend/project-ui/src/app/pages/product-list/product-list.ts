@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './product-list.html',
   styleUrl: './product-list.css'
 })
-export class ProductList implements OnInit {
+export class ProductListComponent implements OnInit {
   private productService = inject(ProductService);
   private router = inject(Router);
   products: Product[] = [];
