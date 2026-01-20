@@ -5,31 +5,31 @@ export const routes: Routes = [
   
   { 
     path: 'products', 
-    loadComponent: () => import('./components/product-list/product-list').then(m => m.ProductList) 
+    loadComponent: () => import('./pages/product-list/product-list').then(m => m.ProductListComponent) 
   },
 
   { 
     path: 'login', 
-    loadComponent: () => import('./components/login/login').then(m => m.Login) 
+    loadComponent: () => import('./pages/login/login').then(m => m.LoginComponent) 
   },
   
   { 
     path: 'register', 
-    loadComponent: () => import('./components/register/register').then(m => m.Register) 
+    loadComponent: () => import('./pages/register/register').then(m => m.RegisterComponent) 
   },
   
   { 
     path: 'payment', 
-    loadComponent: () => import('./components/payment/payment').then(m => m.Payment) 
+    loadComponent: () => import('./pages/payment/payment').then(m => m.PaymentComponent) 
   },
   
   { 
     path: 'admin', 
-    loadComponent: () => import('./components/admin/dashboard/dashboard').then(m => m.Dashboard) 
+    loadComponent: () => import('./pages/admin/dashboard/dashboard').then(m => m.Dashboard) 
   },
   { 
     path: 'admin/categories', 
-    loadComponent: () => import('./components/admin/category-manager/category-manager').then(m => m.CategoryManager) 
+    loadComponent: () => import('./pages/admin/category-manager/category-manager').then(m => m.CategoryManager) 
   },
 
   { path: '**', redirectTo: 'products' }
