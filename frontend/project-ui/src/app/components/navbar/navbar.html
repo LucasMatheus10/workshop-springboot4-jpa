@@ -3,9 +3,44 @@
     <div class="logo" routerLink="/">
       <h1>TechStore</h1>
     </div>
-    <div class="nav-links">
-      <a routerLink="/products" routerLinkActive="active">Produtos</a>
-      <a routerLink="/login" class="login-btn">Entrar</a>
+    
+    <div class="search-box">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text" 
+          placeholder="O que você está procurando?" 
+          (input)="onSearch($event)"
+          #searchInput
+        >
+        <button 
+          *ngIf="searchInput.value" 
+          class="clear-btn" 
+          (click)="searchInput.value = ''; onClear()"
+        >
+          &times;
+        </button>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <a routerLink="/products" class="nav-link">Produtos</a>
+      
+      <div class="auth-section">
+        <a *ngIf="!isLoggedIn" routerLink="/login" class="login-btn">Entrar</a>
+
+        <div *ngIf="isLoggedIn" class="user-menu">
+          <button class="avatar-button" (click)="toggleDropdown()">
+            <div class="avatar-circle">👤</div>
+            <span class="arrow-down">▼</span>
+          </button>
+          
+          <div class="dropdown-menu" *ngIf="showDropdown">
+            <div class="dropdown-header">Minha Conta</div>
+            <button class="logout-item" (click)="logout()">Sair da Conta</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </nav>

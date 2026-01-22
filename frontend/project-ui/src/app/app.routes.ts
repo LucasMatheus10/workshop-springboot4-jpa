@@ -5,22 +5,22 @@ export const routes: Routes = [
   
   { 
     path: 'products', 
-    loadComponent: () => import('./pages/product-list/product-list').then(m => m.ProductListComponent) 
+    loadComponent: () => import('./pages/user/product-list/product-list').then(m => m.ProductListComponent) 
   },
 
   { 
     path: 'login', 
-    loadComponent: () => import('./pages/login/login').then(m => m.LoginComponent) 
+    loadComponent: () => import('./pages/auth/login/login').then(m => m.LoginComponent) 
   },
   
   { 
     path: 'register', 
-    loadComponent: () => import('./pages/register/register').then(m => m.RegisterComponent) 
+    loadComponent: () => import('./pages/auth/register/register').then(m => m.RegisterComponent) 
   },
   
   { 
     path: 'payment', 
-    loadComponent: () => import('./pages/payment/payment').then(m => m.PaymentComponent) 
+    loadComponent: () => import('./pages/user/payment/payment').then(m => m.PaymentComponent) 
   },
   
   { 

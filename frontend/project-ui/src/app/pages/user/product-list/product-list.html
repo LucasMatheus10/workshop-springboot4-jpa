@@ -1,5 +1,5 @@
 <div class="product-grid">
-  @for (product of products; track product.id) {
+  @for (product of filteredProducts; track product.id) {
     <div class="product-card">
       <div class="image-wrapper">
         <img [src]="product.imgUrl" [alt]="product.name">
@@ -17,7 +17,7 @@
     </div>
   } @empty {
     <div class="loading">
-      <p>A carregar catálogo de produtos...</p>
+      <p>Nenhum produto encontrado...</p>
     </div>
   }
 </div>
