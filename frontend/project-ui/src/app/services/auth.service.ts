@@ -1,28 +1,26 @@
 import { Injectable, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private router = inject(Router);
-  
-  // Estado reativo do login
+  private http = inject(HttpClient);
+  private readonly AUTH_API = 'http://localhost:8080/auth/login';
+
   private loggedIn = new BehaviorSubject<boolean>(!!localStorage.getItem('token'));
   isLoggedIn$ = this.loggedIn.asObservable();
 
-  login(token: string) {
-    localStorage.setItem('token', token);
-    this.loggedIn.next(true); // Avisa todos que logou
-    this.router.navigate(['/products']);
+  login(credentials: any) {
+    return this.http.post<{token: string}>(this.AUTH_API, credentials).pipe(
+      tap(res => {
+        localStorage.setItem('token', res.token);
+        this.loggedIn.next(true);
+      })
+    );
   }
 
   logout() {
     localStorage.removeItem('token');
-    this.loggedIn.next(false); // Avisa todos que saiu
-    this.router.navigate(['/login']);
-  }
-
-  checkToken(): boolean {
-    return !!localStorage.getItem('token');
+    this.loggedIn.next(false);
   }
 }

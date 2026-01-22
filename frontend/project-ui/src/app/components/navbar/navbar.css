@@ -1,8 +1,8 @@
 .navbar {
-  background-color: #1a252f; /* Azul marinho profundo mais moderno */
+  background-color: #1a252f;
   color: white;
   position: fixed;
-  height: 80px; /* Reduzi um pouco a altura para ficar menos pesada */
+  height: 100px;
   width: 100%;
   top: 0;
   z-index: 1000;
@@ -13,7 +13,7 @@
 
 .navbar .container {
   display: grid;
-  grid-template-columns: 180px 1fr auto; /* Divisão clara de áreas */
+  grid-template-columns: 180px 1fr auto;
   align-items: center;
   gap: 30px;
   width: 100%;
@@ -22,7 +22,6 @@
   padding: 0 20px;
 }
 
-/* Barra de Pesquisa Estilo Apple/Google */
 .search-box {
   width: 100%;
   max-width: 600px;

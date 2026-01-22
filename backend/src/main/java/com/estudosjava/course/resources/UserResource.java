@@ -45,6 +45,14 @@ public class UserResource {
         return ResponseEntity.ok().body(obj);
     }
 
+    @GetMapping(value = "/search")
+    @Operation(summary = "Buscar usuário por email", description = "Busca o usuário desejado passando o email do usuário")
+    public ResponseEntity<UserDTO> findByEmail(@RequestParam String email) {
+        User user = (User) repository.findByEmail(email); 
+        if (user == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(new UserDTO(user));
+    }
+
     @PostMapping
     @Operation(summary = "Inserir usuário", description = "Cadastra um novo usuário no sistema")
     public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto) {
