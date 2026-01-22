@@ -13,15 +13,13 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class LoginComponent {
   private authService = inject(AuthService);
+  private router = inject(Router);
   loginData = { email: '', password: '' };
 
-  constructor(private router: Router) {}
-
   onLogin() {
-    console.log('Tentando logar com:', this.loginData);
-    // Aqui chamaremos o backend
-    if (this.loginData.email && this.loginData.password) {
-      this.authService.login('user-token-fake'); // Simula um token
-    }
+    this.authService.login(this.loginData).subscribe({
+      next: () => this.router.navigate(['/products']),
+      error: (err) => alert('Falha no login: ' + err.error.message)
+    });
   }
 }
