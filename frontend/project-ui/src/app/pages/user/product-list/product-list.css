@@ -3,6 +3,9 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Grelha responsiva */
   gap: 25px;
   padding: 40px;
+  margin: 0 auto;
+  max-width: 1200px;
+  justify-content: center;
   background-color: #f9f9f9;
 }
 
