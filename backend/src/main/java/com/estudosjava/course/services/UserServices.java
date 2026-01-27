@@ -7,6 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.userdetails.UserDetails;
 import com.estudosjava.course.dto.UserDTO;
 import com.estudosjava.course.dto.UserInsertDTO;
 import com.estudosjava.course.dto.UserOrdersDTO;
@@ -16,7 +17,7 @@ import com.estudosjava.course.repositories.UserRepository;
 import com.estudosjava.course.services.exceptions.DatabaseException;
 import com.estudosjava.course.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
-
+import com.estudosjava.course.dto.PasswordResetDTO;
 @Service
 public class UserServices {
 
@@ -39,8 +40,17 @@ public class UserServices {
         return new UserOrdersDTO(user);
     }
 
+    @Transactional(readOnly = true)
+    public UserDetails findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
+
     @Transactional
     public UserDTO insert(UserInsertDTO dto) {
+        // Verifica se o email já está cadastrado
+        if (repository.findByEmail(dto.email()) != null) {
+            throw new DatabaseException("Este e-mail já está cadastrado no sistema.");
+        }
         User user = new User();
         loadData(user, dto);
         user = repository.save(user);
@@ -66,6 +76,22 @@ public class UserServices {
             updateData(user, dto);
             user = repository.save(user);
             return new UserDTO(user);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
+    }
+
+    @Transactional
+    public void updatePassword(Long id, PasswordResetDTO dto) {
+        try {
+            User user = repository.getReferenceById(id);
+
+            if (passwordEncoder.matches(dto.newPassword(), user.getPassword())) {
+                throw new DatabaseException("A nova senha não pode ser igual à senha atual.");
+            }
+
+            user.setPassword(passwordEncoder.encode(dto.newPassword()));
+            repository.save(user);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(id);
         }

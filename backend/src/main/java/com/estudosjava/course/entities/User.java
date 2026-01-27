@@ -2,13 +2,11 @@ package com.estudosjava.course.entities;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,6 +32,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
+    @Column(unique = true)
     private String email;
     private String phone;
     @JsonIgnore

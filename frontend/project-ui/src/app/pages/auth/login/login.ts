@@ -17,9 +17,24 @@ export class LoginComponent {
   loginData = { email: '', password: '' };
 
   onLogin() {
-    this.authService.login(this.loginData).subscribe({
-      next: () => this.router.navigate(['/products']),
-      error: (err) => alert('Falha no login: ' + err.error.message)
-    });
+    if (this.loginData.email && this.loginData.password) {
+      this.authService.login(this.loginData).subscribe({
+        next: (res) => {
+          // Sucesso: redireciona
+          this.router.navigate(['/products']);
+        },
+        error: (err) => {
+          // Se o erro for 401 ou 403 (Unauthorized/Forbidden)
+          if (err.status === 401 || err.status === 403) {
+            alert('E-mail ou senha incorretos. Verifique seus dados.');
+          } else if (err.error && err.error.message) {
+            // Se o backend enviou uma mensagem específica no StandardError
+            alert(err.error.message);
+          } else {
+            alert('Ocorreu um erro ao tentar logar. Tente novamente mais tarde.');
+          }
+        }
+      });
+    }
   }
 }

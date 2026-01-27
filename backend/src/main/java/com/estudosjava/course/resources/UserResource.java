@@ -6,13 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
+import com.estudosjava.course.entities.User;
 import com.estudosjava.course.dto.UserDTO;
 import com.estudosjava.course.dto.UserInsertDTO;
 import com.estudosjava.course.dto.UserOrdersDTO;
 import com.estudosjava.course.dto.UserUpdateDTO;
 import com.estudosjava.course.services.UserServices;
-
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,10 +21,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import com.estudosjava.course.dto.PasswordResetDTO;
 @RestController
 @RequestMapping(value = "/users")
 @Tag(name = "Usuários", description = "Gerenciador de usuários")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserResource {
     
     @Autowired
@@ -48,8 +50,10 @@ public class UserResource {
     @GetMapping(value = "/search")
     @Operation(summary = "Buscar usuário por email", description = "Busca o usuário desejado passando o email do usuário")
     public ResponseEntity<UserDTO> findByEmail(@RequestParam String email) {
-        User user = (User) repository.findByEmail(email); 
-        if (user == null) return ResponseEntity.notFound().build();
+        User user = (User) service.findByEmail(email); 
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok().body(new UserDTO(user));
     }
 
@@ -76,4 +80,10 @@ public class UserResource {
         return ResponseEntity.ok().body(newDto);
     }
     
+    @PutMapping(value = "/{id}/password")
+    @Operation(summary = "Redefinir senha", description = "Atualiza apenas a senha do usuário identificado pelo ID")
+    public ResponseEntity<Void> updatePassword(@PathVariable Long id, @Valid @RequestBody PasswordResetDTO dto) {
+        service.updatePassword(id, dto);
+        return ResponseEntity.noContent().build();
+    }
 }

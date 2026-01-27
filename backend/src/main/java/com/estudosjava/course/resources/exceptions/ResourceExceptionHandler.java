@@ -59,4 +59,12 @@ public class ResourceExceptionHandler {
         StandardError err = new StandardError(Instant.now(), status.value(), error, "E-mail ou senha inválidos", request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
+
+    @ExceptionHandler(org.springframework.security.core.AuthenticationException.class)
+    public ResponseEntity<StandardError> authentication(org.springframework.security.core.AuthenticationException e, HttpServletRequest request) {
+        String error = "Erro de autenticação";
+        HttpStatus status = HttpStatus.UNAUTHORIZED; // 401
+        StandardError err = new StandardError(Instant.now(), status.value(), error, "E-mail ou senha incorretos", request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
 }

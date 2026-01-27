@@ -31,9 +31,18 @@ export class ForgotPasswordComponent {
 
   onResetPassword() {
     if (this.userId) {
-      this.http.put(`http://localhost:8080/users/${this.userId}`, { password: this.newPassword }).subscribe({
+      const resetData = { newPassword: this.newPassword };
+    
+      this.http.put(`http://localhost:8080/users/${this.userId}/password`, resetData).subscribe({
         next: () => this.step = 3,
-        error: () => alert('Erro ao atualizar a senha.')
+        error: (err) => {
+          // Verifica se o backend enviou uma mensagem de erro específica
+          if (err.status === 400 || err.status === 500) {
+            alert(err.error.message || 'A nova senha não pode ser igual à atual.');
+          } else {
+            alert('Erro ao atualizar a senha. Tente novamente mais tarde.');
+          }
+        }
       });
     }
   }
