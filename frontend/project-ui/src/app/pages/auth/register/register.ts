@@ -22,7 +22,14 @@ export class RegisterComponent {
         alert('Usuário cadastrado com sucesso!');
         this.router.navigate(['/login']);
       },
-      error: (err) => alert('Erro ao cadastrar usuário.')
+      error: (err) => {
+        // Se o backend retornou um erro de validação ou de banco
+        if (err.error && err.error.message) {
+          alert(err.error.message); // Exibe "Este e-mail já está cadastrado no sistema."
+        } else {
+          alert('Erro ao realizar cadastro. Tente novamente.');
+        }
+      }
     });
   }
 }
