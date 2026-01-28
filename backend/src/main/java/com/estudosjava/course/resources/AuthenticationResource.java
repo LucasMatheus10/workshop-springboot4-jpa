@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("auth")
 @Tag(name = "Login", description = "Autenticação de usuário")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthenticationResource {
 
     @Autowired

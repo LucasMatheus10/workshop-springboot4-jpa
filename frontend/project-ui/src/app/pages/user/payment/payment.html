@@ -1,0 +1,53 @@
+<div class="payment-container">
+  <div class="payment-card shadow">
+    <div class="header">
+      <h2 class="title">Resumo da Compra</h2>
+    </div>
+    
+    <div class="items-list">
+      @for (item of selectedProducts; track item.id) {
+        <div class="product-item">
+          <div class="product-info">
+            <span class="product-name">{{ item.name }}</span>
+            <span class="unit-price">{{ item.price | currency:'BRL' }}</span>
+          </div>
+          
+          <div class="quantity-controls">
+            <button class="qty-btn" (click)="updateQuantity(item, -1)">-</button>
+            <span class="qty-value">{{ item.quantity || 1 }}</span>
+            <button class="qty-btn" (click)="updateQuantity(item, 1)">+</button>
+          </div>
+
+          <div class="subtotal-wrapper">
+            <span class="subtotal-label">Subtotal</span>
+            <span class="subtotal-value">
+              {{ (item.price * (item.quantity || 1)) | currency:'BRL' }}
+            </span>
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <p class="empty-msg">Seu carrinho está vazio.</p>
+        </div>
+      }
+    </div>
+
+    <div class="cart-footer" *ngIf="selectedProducts.length > 0">
+      <button class="btn-clear-minimal" (click)="clearCart()">
+        <span class="icon">🗑️</span> Esvaziar Carrinho
+      </button>
+    </div>
+
+    <div class="total-section">
+      <span>Total a pagar:</span>
+      <span class="total-amount">{{ total | currency:'BRL' }}</span>
+    </div>
+
+    <div class="actions">
+      <button class="btn-cancel" routerLink="/products">Continuar Comprando</button>
+      <button class="btn-confirm" (click)="confirmPayment()" [disabled]="selectedProducts.length === 0">
+        Finalizar e Pagar
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<div class="admin-container">
+  <header class="admin-header">
+    <h2 class="title">{{ editingId ? 'Editar Categoria' : 'Gerir Categorias' }}</h2>
+    <div class="actions">
+      <button class="btn-nav" *ngIf="editingId" (click)="cancelEdit()" style="color: #e74c3c; border-color: #e74c3c;">
+        Cancelar
+      </button>
+      <button class="btn-nav" routerLink="/admin/dashboard">
+        Voltar ao Dashboard
+      </button>
+    </div>
+  </header>
+
+  <div class="card shadow mb-5">
+    <h3>{{ editingId ? 'Mudar nome da Categoria' : 'Nova Categoria' }}</h3>
+    <p class="text-muted mb-4">
+      {{ editingId ? 'Altere o nome da categoria selecionada abaixo.' : 'Adicione novas categorias para organizar os seus produtos na loja.' }}
+    </p>
+
+    <div class="form-group">
+      <label for="categoryName">Nome da Categoria</label>
+      <input 
+        id="categoryName"
+        [(ngModel)]="categoryName" 
+        class="form-control" 
+        placeholder="Ex: Periféricos, Hardware, Monitores..."
+        (keyup.enter)="save()"
+      >
+      
+      <button 
+        class="btn-primary" 
+        (click)="save()" 
+        [disabled]="!categoryName.trim()"
+      >
+        {{ editingId ? 'Salvar Alteração' : 'Cadastrar Categoria' }}
+      </button>
+    </div>
+
+    <div class="info-box mt-3" *ngIf="categoryName.trim()">
+      <small>A visualizar: <strong>{{ categoryName }}</strong></small>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <h3>Categorias Existentes</h3>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (cat of categories; track cat.id) {
+          <tr>
+            <td>#{{ cat.id }}</td>
+            <td style="font-weight: 600;">{{ cat.name }}</td>
+            <td class="actions-cell">
+              <button class="btn-action edit" (click)="editCategory(cat)" title="Editar nome">✏️</button>
+              
+              <button class="btn-action delete" (click)="deleteCategory(cat.id)" title="Excluir">🗑️</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="3" style="text-align: center; padding: 30px; color: #95a5a6;">
+              Nenhuma categoria cadastrada.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

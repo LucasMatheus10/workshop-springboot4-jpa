@@ -1,0 +1,68 @@
+<nav class="navbar">
+  <div class="container">
+    <div class="logo" (click)="goToHome()" routerLink="/" style="cursor: pointer;">
+      <h1>TechStore</h1>
+    </div>
+    
+    <div class="category-menu">
+      <button class="category-btn" (click)="toggleCategoryMenu()">
+        <span class="menu-icon">☰</span> DEPARTAMENTOS
+      </button>
+      
+      <div class="category-dropdown" *ngIf="showCategoryMenu">
+        @for (cat of categories; track cat.id) {
+          <button class="dropdown-item" (click)="filterByCategory(cat.name)">
+            {{ cat.name }}
+            <span class="arrow-right">›</span>
+          </button>
+        }
+      </div>
+    </div>
+    <div class="search-box">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text" 
+          placeholder="O que você está procurando?" 
+          (input)="onSearch($event)"
+          #searchInput
+        >
+        <button 
+          *ngIf="searchInput.value" 
+          class="clear-btn" 
+          (click)="searchInput.value = ''; onClear()"
+        >
+          &times;
+        </button>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <a routerLink="/products" class="nav-link">Produtos</a>
+
+      <div *ngIf="isLoggedIn" class="cart-section" routerLink="/payment" style="cursor: pointer; position: relative;">
+        <span class="cart-icon" style="font-size: 1.5rem;">🛒</span>
+        <span *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
+      </div>
+      
+      <div class="auth-section">
+        <a *ngIf="!isLoggedIn" routerLink="/login" class="login-btn">Entrar</a>
+
+        <div *ngIf="isLoggedIn" class="user-menu">
+          <button class="avatar-button" (click)="toggleDropdown()">
+            <div class="avatar-circle">👤</div>
+            <span class="arrow-down">▼</span>
+          </button>
+          
+          <div class="dropdown-menu" *ngIf="showDropdown">
+            <div class="dropdown-header">Minha Conta</div>
+            <button *ngIf="isAdmin" class="logout-item" style="color: #3498db; background: #ebf5fb; margin-bottom: 5px;" routerLink="/admin/dashboard" (click)="showDropdown = false">
+              Painel Administrativo
+            </button>
+            <button class="logout-item" (click)="logout()">Sair da Conta</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

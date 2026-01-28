@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,8 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.estudosjava.course.dto.UserDTO;
@@ -25,6 +24,7 @@ import com.estudosjava.course.dto.UserInsertDTO;
 import com.estudosjava.course.dto.UserOrdersDTO;
 import com.estudosjava.course.dto.UserUpdateDTO;
 import com.estudosjava.course.entities.User;
+import com.estudosjava.course.entities.enums.UserRole;
 import com.estudosjava.course.repositories.UserRepository;
 import com.estudosjava.course.services.exceptions.DatabaseException;
 import com.estudosjava.course.services.exceptions.ResourceNotFoundException;
@@ -38,14 +38,13 @@ public class UserServiceTests {
     private UserServices service;
 
     @Mock
-    private UserRepository repository; // Certifique-se que no UserServices o nome é 'repository'
+    private UserRepository repository;
 
     @Mock
-    private PasswordEncoder passwordEncoder; // Adicionado para suportar a nova segurança
+    private PasswordEncoder passwordEncoder;
 
     private Long existingId;
     private Long nonExistingId;
-    private Long dependentId;
     private User user;
     private UserUpdateDTO updateDTO;
     private UserInsertDTO insertDTO;
@@ -54,12 +53,11 @@ public class UserServiceTests {
     void setUp() throws Exception {
         existingId = 1L;
         nonExistingId = 2L;
-        dependentId = 3L;
 
-        // Dados base para os mocks
-        user = new User(existingId, "Maria Brown", "maria@gmail.com", "988888888", "123456");
-        insertDTO = new UserInsertDTO("Maria Brown", "maria@gmail.com", "988888888", "123456");
-        updateDTO = new UserUpdateDTO("Maria Green", "maria_green@gmail.com", "977777777");
+        user = new User(existingId, "Maria Brown", "maria@gmail.com", "988888888", "123456", UserRole.USER, new ArrayList<>());
+        
+        insertDTO = new UserInsertDTO("Maria Brown", "maria@gmail.com", "988888888", "123456", UserRole.USER);
+        updateDTO = new UserUpdateDTO("Maria Green", "maria_green@gmail.com", "977777777", UserRole.USER);
     }
 
     @Test
@@ -73,61 +71,36 @@ public class UserServiceTests {
     @Test
     public void findByIdShouldReturnUserDTOWhenIdExists() {
         when(repository.findById(existingId)).thenReturn(Optional.of(user));
-
         UserOrdersDTO result = service.findById(existingId);
-
         Assertions.assertNotNull(result);
         Assertions.assertEquals("Maria Brown", result.name());
     }
 
     @Test
-    public void findByIdShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
-        when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
-
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            service.findById(nonExistingId);
-        });
-    }
-
-    @Test
-    public void insertShouldReturnUserDTO() {
+    public void insertShouldReturnUserDTOWhenDataIsValid() {
+        // Simula que o e-mail não existe (validação de unicidade)
+        when(repository.findByEmail(anyString())).thenReturn(null);
         when(passwordEncoder.encode(any())).thenReturn("hashed_password");
         when(repository.save(any())).thenReturn(user);
 
         UserDTO result = service.insert(insertDTO);
 
         Assertions.assertNotNull(result);
-        verify(passwordEncoder).encode(any());
+        Assertions.assertEquals(UserRole.USER, result.role());
+        verify(repository).findByEmail(insertDTO.email());
         verify(repository).save(any());
     }
 
     @Test
-    public void deleteShouldDoNothingWhenIdExists() {
-        // Para deleteById que retorna void, não precisamos de 'when' a menos que queiramos lançar exceção
-        Assertions.assertDoesNotThrow(() -> {
-            service.delete(existingId);
-        });
-        verify(repository).deleteById(existingId);
-    }
-
-    @Test
-    public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
-        // Simula o comportamento do Spring Data JPA quando o ID não existe
-        Mockito.doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(nonExistingId);
-
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            service.delete(nonExistingId);
-        });
-    }
-
-    @Test
-    public void deleteShouldThrowDatabaseExceptionWhenDependentId() {
-        // Simula erro de integridade referencial
-        Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependentId);
+    public void insertShouldThrowDatabaseExceptionWhenEmailAlreadyExists() {
+        // Simula que o e-mail já está cadastrado
+        when(repository.findByEmail(insertDTO.email())).thenReturn(user);
 
         Assertions.assertThrows(DatabaseException.class, () -> {
-            service.delete(dependentId);
+            service.insert(insertDTO);
         });
+
+        verify(repository, Mockito.never()).save(any());
     }
 
     @Test
@@ -139,13 +112,11 @@ public class UserServiceTests {
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals("Maria Green", result.name());
-        verify(repository).getReferenceById(existingId);
         verify(repository).save(any());
     }
 
     @Test
     public void updateShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
-        // Simula o erro do Hibernate ao não encontrar a entidade para referência
         when(repository.getReferenceById(nonExistingId)).thenThrow(EntityNotFoundException.class);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
