@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:15
+    container_name: techstore-db
+    restart: always
+    environment:
+      POSTGRES_DB: techstore
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+
+  backend:
+    image: lucasmatheus08/techstore-backend:v1
+    container_name: techstore-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/techstore
+      DB_USERNAME: postgres
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+      - db
+
+  frontend:
+    image: lucasmatheus08/techstore-frontend:v1
+    container_name: techstore-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend

@@ -41,7 +41,7 @@ public class User implements UserDetails {
     @JsonIgnore
     private String password;
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private UserRole role = UserRole.USER;
     @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();

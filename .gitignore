@@ -4,16 +4,20 @@
 *.swp
 *.scratch
 
-# Sistema Operacional
+# Sistema Operacional / Docker
 .DS_Store
 Thumbs.db
 desktop.ini
+.docker/
 
 # Logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Sensíveis
+.env
 
 # Dependências
 node_modules/

@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "project-ui": {
+    "techstore": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -60,10 +60,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "project-ui:build:production"
+              "buildTarget": "techstore:build:production"
             },
             "development": {
-              "buildTarget": "project-ui:build:development"
+              "buildTarget": "techstore:build:development"
             }
           },
           "defaultConfiguration": "development"
