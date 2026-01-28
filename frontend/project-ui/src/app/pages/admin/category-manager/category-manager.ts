@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { CategoryService } from '../../../services/category.service';
 
 @Component({
   selector: 'app-category-manager',
@@ -16,6 +17,7 @@ export class CategoryManager {
   categories: any[] = [];
   categoryName = '';
   editingId: number | null = null; // Controla se estamos editando ou criando
+  private categoryService = inject(CategoryService);
 
   ngOnInit() {
     this.loadCategories();
@@ -36,6 +38,7 @@ export class CategoryManager {
     request.subscribe({
       next: () => {
         alert(this.editingId ? 'Categoria atualizada!' : 'Categoria criada!');
+        this.categoryService.refreshCategories();
         this.cancelEdit();
         this.loadCategories();
       },

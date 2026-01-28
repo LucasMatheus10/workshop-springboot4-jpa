@@ -2,8 +2,9 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http'; // Importação adicionada
-import { ProductService } from '../../services/product.service';
+import { CategoryService } from '../../services/category.service';
 import { AuthService } from '../../services/auth.service';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-navbar',
@@ -13,6 +14,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './navbar.css'
 })
 export class NavbarComponent implements OnInit {
+  private categoryService = inject(CategoryService);
   private productService = inject(ProductService);
   private authService = inject(AuthService);
   private http = inject(HttpClient); // Injeção adicionada
@@ -26,7 +28,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     // Carrega as categorias dinamicamente do backend
-    this.http.get<any[]>('http://localhost:8080/categories').subscribe(data => {
+    this.categoryService.categories$.subscribe(data => {
       this.categories = data;
     });
 
