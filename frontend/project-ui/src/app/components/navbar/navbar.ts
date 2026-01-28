@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit {
   isLoggedIn = false;
   showDropdown = false;
   cartCount = 0;
+  isAdmin = false;
 
   ngOnInit(): void {
     this.productService.cartCount$.subscribe(count => {
@@ -26,6 +27,8 @@ export class NavbarComponent implements OnInit {
     
     this.authService.isLoggedIn$.subscribe(status => {
       this.isLoggedIn = status;
+      // Atualiza o estado de admin sempre que o status de login mudar
+      this.isAdmin = status ? this.authService.isAdmin() : false;
     });
   }
 

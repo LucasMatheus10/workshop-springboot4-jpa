@@ -18,6 +18,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.estudosjava.course.entities.enums.UserRole;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -37,7 +40,8 @@ public class User implements UserDetails {
     private String phone;
     @JsonIgnore
     private String password;
-
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
     @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
@@ -56,6 +60,12 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role == UserRole.ADMIN) {
+            return List.of(
+                new SimpleGrantedAuthority("ROLE_ADMIN"), 
+                new SimpleGrantedAuthority("ROLE_USER")
+            );
+        }
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 

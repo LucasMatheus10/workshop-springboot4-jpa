@@ -22,7 +22,11 @@ export class LoginComponent {
         next: (res) => {
           // Armazena o e-mail para identificação posterior do ID do usuário
           localStorage.setItem('userEmail', this.loginData.email);
-          this.router.navigate(['/products']);
+          if (this.authService.isAdmin()) {
+            this.router.navigate(['/admin/dashboard']);
+          } else {
+            this.router.navigate(['/products']);
+          }
         },
         error: (err) => {
           // Se o erro for 401 ou 403 (Unauthorized/Forbidden)

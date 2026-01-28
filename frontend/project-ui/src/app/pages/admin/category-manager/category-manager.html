@@ -1,1 +1,40 @@
-<p>category-manager works!</p>
+<div class="admin-container">
+  <header class="admin-header">
+    <h2 class="title">Gerir Categorias</h2>
+    <div class="actions">
+      <button class="btn-nav" routerLink="/admin/dashboard">
+        Voltar ao Dashboard
+      </button>
+    </div>
+  </header>
+
+  <div class="card shadow">
+    <h3>Nova Categoria</h3>
+    <p class="text-muted mb-4">
+      Adicione novas categorias para organizar os seus produtos na loja.
+    </p>
+
+    <div class="form-group">
+      <label for="categoryName">Nome da Categoria</label>
+      <input 
+        id="categoryName"
+        [(ngModel)]="categoryName" 
+        class="form-control" 
+        placeholder="Ex: Periféricos, Hardware, Monitores..."
+        (keyup.enter)="save()"
+      >
+      
+      <button 
+        class="btn-primary" 
+        (click)="save()" 
+        [disabled]="!categoryName.trim()"
+      >
+        Cadastrar Categoria
+      </button>
+    </div>
+
+    <div class="info-box mt-3" *ngIf="categoryName.trim()">
+      <small>A visualizar: <strong>{{ categoryName }}</strong></small>
+    </div>
+  </div>
+</div>

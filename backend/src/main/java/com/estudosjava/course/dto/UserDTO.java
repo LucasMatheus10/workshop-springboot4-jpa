@@ -4,7 +4,7 @@ import com.estudosjava.course.entities.User;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-
+import com.estudosjava.course.entities.enums.UserRole;
 public record UserDTO(
     @NotNull
     Long id,
@@ -14,9 +14,10 @@ public record UserDTO(
     @Email
     String email,
     @NotBlank(message = "Telefone é obrigatório")
-    String phone
+    String phone,
+    UserRole role
 ) {  
     public UserDTO(User user) {
-        this(user.getId(), user.getName(), user.getEmail(), user.getPhone());
+        this(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getRole());
     }
 }
