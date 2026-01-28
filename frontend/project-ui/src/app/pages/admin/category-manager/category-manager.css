@@ -1,6 +1,7 @@
+/* Container Principal */
 .admin-container {
   padding: 40px;
-  max-width: 600px;
+  max-width: 700px; /* Ajustado para acomodar melhor a tabela */
   margin: 0 auto;
 }
 
@@ -9,12 +10,19 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  border-bottom: 2px solid #f0f2f5;
+  padding-bottom: 15px;
 }
 
 .title {
   color: #1a252f;
   font-weight: 800;
   font-size: 1.8rem;
+}
+
+.admin-header .actions {
+  display: flex;
+  gap: 10px;
 }
 
 /* Card de Formulário */
@@ -50,7 +58,7 @@ label {
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
-/* Botões Interativos */
+/* Botões de Navegação e Ação Principal */
 .btn-nav {
   background-color: #ffffff;
   color: #2c3e50;
@@ -92,6 +100,63 @@ label {
   cursor: not-allowed;
 }
 
+/* Tabela de Gestão de Categorias */
+.table-wrapper {
+  margin-top: 40px;
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  border: 1px solid #e1e8ed;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 15px;
+  border-bottom: 2px solid #eee;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.admin-table td {
+  padding: 15px;
+  border-bottom: 1px solid #f5f5f5;
+  vertical-align: middle;
+}
+
+/* Botões de Ação na Tabela (✏️ e 🗑️) */
+.actions-cell {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-action {
+  border: none;
+  background: #f1f5f9;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.1rem;
+}
+
+.btn-action.edit:hover {
+  background: #dbeafe;
+  transform: scale(1.1);
+}
+
+.btn-action.delete:hover {
+  background: #fee2e2;
+  transform: scale(1.1);
+}
+
+/* Auxiliares */
 .info-box {
   background-color: #ebf5fb;
   color: #2980b9;
@@ -99,3 +164,5 @@ label {
   border-radius: 6px;
   text-align: center;
 }
+
+.mb-5 { margin-bottom: 40px; }

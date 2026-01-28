@@ -13,17 +13,56 @@ import { RouterLink } from '@angular/router';
 })
 export class CategoryManager {
   private http = inject(HttpClient);
+  categories: any[] = [];
   categoryName = '';
+  editingId: number | null = null; // Controla se estamos editando ou criando
+
+  ngOnInit() {
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.http.get<any[]>('http://localhost:8080/categories').subscribe(data => this.categories = data);
+  }
 
   save() {
     if (!this.categoryName.trim()) return;
 
-    this.http.post('http://localhost:8080/categories', { name: this.categoryName }).subscribe({
+    const url = 'http://localhost:8080/categories';
+    const request = this.editingId 
+      ? this.http.put(`${url}/${this.editingId}`, { name: this.categoryName })
+      : this.http.post(url, { name: this.categoryName });
+
+    request.subscribe({
       next: () => {
-        alert('Categoria criada com sucesso!');
-        this.categoryName = '';
+        alert(this.editingId ? 'Categoria atualizada!' : 'Categoria criada!');
+        this.cancelEdit();
+        this.loadCategories();
       },
-      error: (err) => alert('Erro ao criar categoria: ' + (err.error.message || 'Erro desconhecido'))
+      error: (err) => alert('Erro: ' + (err.error.message || 'Falha na operação'))
     });
+  }
+
+  editCategory(cat: any) {
+    this.categoryName = cat.name;
+    this.editingId = cat.id;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  deleteCategory(id: number) {
+    if (confirm('Deseja excluir esta categoria? Isso pode afetar produtos vinculados.')) {
+      this.http.delete(`http://localhost:8080/categories/${id}`).subscribe({
+        next: () => {
+          alert('Categoria removida!');
+          this.loadCategories();
+        },
+        error: () => alert('Erro: Esta categoria pode estar em uso por algum produto.')
+      });
+    }
+  }
+
+  cancelEdit() {
+    this.categoryName = '';
+    this.editingId = null;
   }
 }
