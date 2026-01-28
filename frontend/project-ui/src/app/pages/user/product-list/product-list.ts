@@ -63,9 +63,20 @@ export class ProductListComponent implements OnInit {
     if (!token) {
       alert('Por favor, faça login para selecionar este produto.');
       this.router.navigate(['/login']);
-    } else {
-      console.log('Produto selecionado:', product);
-      this.router.navigate(['/payment']);
+      return;
     }
+
+    // Recupera o carrinho atual ou cria um novo array
+    const cart: Product[] = JSON.parse(localStorage.getItem('cart') || '[]');
+    
+    // Adiciona o novo produto ao carrinho
+    cart.push(product);
+    
+    // Salva de volta no localStorage
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    this.productService.updateCartCount();
+    
+    alert(`${product.name} adicionado ao carrinho!`);
   }
 }
