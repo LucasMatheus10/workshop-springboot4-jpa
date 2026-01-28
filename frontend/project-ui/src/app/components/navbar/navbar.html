@@ -25,6 +25,11 @@
 
     <div class="nav-actions">
       <a routerLink="/products" class="nav-link">Produtos</a>
+
+      <div class="cart-section" routerLink="/payment" style="cursor: pointer; position: relative;">
+        <span class="cart-icon" style="font-size: 1.5rem;">🛒</span>
+        <span *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
+      </div>
       
       <div class="auth-section">
         <a *ngIf="!isLoggedIn" routerLink="/login" class="login-btn">Entrar</a>

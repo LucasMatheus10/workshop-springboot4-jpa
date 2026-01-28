@@ -17,12 +17,21 @@ export class NavbarComponent implements OnInit {
   
   isLoggedIn = false;
   showDropdown = false;
+  cartCount = 0;
 
   ngOnInit(): void {
-    // Escuta o estado de login do serviço centralizado
+    this.productService.cartCount$.subscribe(count => {
+      this.cartCount = count;
+    });
+    
     this.authService.isLoggedIn$.subscribe(status => {
       this.isLoggedIn = status;
     });
+  }
+
+  updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    this.cartCount = cart.length;
   }
 
   onSearch(event: any): void {

@@ -20,7 +20,8 @@ export class LoginComponent {
     if (this.loginData.email && this.loginData.password) {
       this.authService.login(this.loginData).subscribe({
         next: (res) => {
-          // Sucesso: redireciona
+          // Armazena o e-mail para identificação posterior do ID do usuário
+          localStorage.setItem('userEmail', this.loginData.email);
           this.router.navigate(['/products']);
         },
         error: (err) => {
