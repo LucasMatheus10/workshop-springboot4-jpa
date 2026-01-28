@@ -1,9 +1,23 @@
 <nav class="navbar">
   <div class="container">
-    <div class="logo" routerLink="/">
+    <div class="logo" (click)="goToHome()" routerLink="/" style="cursor: pointer;">
       <h1>TechStore</h1>
     </div>
     
+    <div class="category-menu">
+      <button class="category-btn" (click)="toggleCategoryMenu()">
+        <span class="menu-icon">☰</span> DEPARTAMENTOS
+      </button>
+      
+      <div class="category-dropdown" *ngIf="showCategoryMenu">
+        @for (cat of categories; track cat.id) {
+          <button class="dropdown-item" (click)="filterByCategory(cat.name)">
+            {{ cat.name }}
+            <span class="arrow-right">›</span>
+          </button>
+        }
+      </div>
+    </div>
     <div class="search-box">
       <div class="search-input-wrapper">
         <span class="search-icon">🔍</span>

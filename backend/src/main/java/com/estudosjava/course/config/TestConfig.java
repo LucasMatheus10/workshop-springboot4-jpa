@@ -16,7 +16,7 @@ import com.estudosjava.course.entities.Payment;
 import com.estudosjava.course.entities.Product;
 import com.estudosjava.course.entities.User;
 import com.estudosjava.course.entities.enums.OrderStatus;
-import com.estudosjava.course.entities.enums.UserRole; // Importação necessária
+import com.estudosjava.course.entities.enums.UserRole;
 import com.estudosjava.course.repositories.CategoryRepository;
 import com.estudosjava.course.repositories.OrderItemRepository;
 import com.estudosjava.course.repositories.OrderRepository;
@@ -58,9 +58,12 @@ public class TestConfig implements CommandLineRunner {
         Product p4 = new Product(null, "PC Gamer", "High performance gaming PC", 3200.0, "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&q=80&w=1000");
         Product p5 = new Product(null, "Rails for Dummies", "A beginner's guide to Rails", 100.99, "https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&q=80&w=1000");
         Product p6 = new Product(null, "Headset", "Noise-cancelling headphones", 299.99, "https://www.pngall.com/wp-content/uploads/5/Headset-PNG-Image-HD.png");
-        
+        Product p7 = new Product(null, "Camiseta Tech", "Camiseta algodão 100%", 59.90, "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1000");
+        Product p8 = new Product(null, "Moletom Gamer", "Moletom com capuz confortável", 150.0, "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=1000");
+        Product p9 = new Product(null, "Boné Estilizado", "Boné aba curva preto", 45.0, "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=1000");
+
         categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
-        productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6));
+        productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9));
 
         p1.getCategories().add(cat2);
         p2.getCategories().add(cat1);
@@ -68,14 +71,17 @@ public class TestConfig implements CommandLineRunner {
         p4.getCategories().add(cat1);
         p5.getCategories().add(cat2);
         p6.getCategories().add(cat1);
+        p7.getCategories().add(cat3);
+        p8.getCategories().add(cat3);
+        p9.getCategories().add(cat3);
 
-        productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6));
+        productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9));
 
         User u1 = new User(null, "John Doe", "john.doe@email.com", "1234567890", passwordEncoder.encode("password"));
-        u1.setRole(UserRole.ADMIN); // Definido como Administrador para acesso ao painel
+        u1.setRole(UserRole.ADMIN);
 
         User u2 = new User(null, "Jane Smith", "jane.smith@email.com", "0987654321", passwordEncoder.encode("password123"));
-        u2.setRole(UserRole.USER); // Usuário comum
+        u2.setRole(UserRole.USER);
 
         userRepository.saveAll(Arrays.asList(u1, u2));
 

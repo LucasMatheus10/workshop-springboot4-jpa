@@ -1,7 +1,7 @@
 /* Container Principal */
 .admin-container {
   padding: 40px;
-  max-width: 800px; /* Reduzido para o formulário não ficar muito largo */
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -19,6 +19,11 @@
   font-weight: 800;
 }
 
+.admin-header .actions {
+  display: flex;
+  gap: 10px;
+}
+
 /* Card do Formulário */
 .card {
   background: white;
@@ -29,9 +34,9 @@
 }
 
 /* Estilização dos Inputs */
-.mb-3 {
-  margin-bottom: 20px;
-}
+.mb-3 { margin-bottom: 20px; }
+.mb-4 { margin-bottom: 25px; }
+.mb-5 { margin-bottom: 40px; }
 
 label {
   display: block;
@@ -47,7 +52,7 @@ label {
   border-radius: 8px;
   border: 1.5px solid #dcdfe6;
   font-size: 1rem;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: all 0.3s ease;
   outline: none;
 }
 
@@ -61,7 +66,7 @@ textarea.form-control {
   resize: vertical;
 }
 
-/* Botões Interativos (Padrão Dashboard) */
+/* Botões de Navegação e Salvar */
 .btn-nav {
   background-color: #ffffff;
   color: #2c3e50;
@@ -87,41 +92,19 @@ textarea.form-control {
   box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
 }
 
-/* Botão de Salvar (Destaque Verde) */
 .btn-save {
-  background-color: #27ae60;
-  color: white;
-  border: none;
-  width: 100%; /* Botão largo para mobile-friendly */
+  background-color: #27ae60 !important;
+  color: white !important;
+  width: 100%;
+  border: none !important;
   margin-top: 10px;
 }
 
 .btn-save:hover {
-  background-color: #219150;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+  background-color: #219150 !important;
 }
 
-/* Preview da Imagem */
-.image-preview {
-  margin-top: 15px;
-  width: 100%;
-  max-height: 250px;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px dashed #cbd5e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f8fafc;
-}
-
-.image-preview img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
+/* Seleção de Categorias (Badges) */
 .category-selection {
   display: flex;
   flex-wrap: wrap;
@@ -144,25 +127,79 @@ textarea.form-control {
   font-size: 0.85rem;
   font-weight: 600;
   color: #4a5568;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   user-select: none;
 }
 
-.cat-badge:hover {
-  border-color: #3498db;
-  color: #3498db;
-  background: #f0f7ff;
-}
-
-/* Efeito Visual de Seleção */
 .cat-badge.active {
   background: #3498db;
   color: white;
   border-color: #2980b9;
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
 }
 
+/* Tabela de Gestão de Produtos */
+.table-wrapper {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  border: 1px solid #e1e8ed;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 15px;
+  border-bottom: 2px solid #eee;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.admin-table td {
+  padding: 15px;
+  border-bottom: 1px solid #f5f5f5;
+  vertical-align: middle;
+}
+
+.price-cell {
+  color: #27ae60;
+  font-weight: 700;
+}
+
+/* Botões de Ação na Tabela (Editar/Excluir) */
+.actions-cell {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-action {
+  border: none;
+  background: #f1f5f9;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.1rem;
+}
+
+.btn-action.edit:hover {
+  background: #dbeafe;
+  transform: scale(1.1);
+}
+
+.btn-action.delete:hover {
+  background: #fee2e2;
+  transform: scale(1.1);
+}
+
+/* Animações */
 .check-icon {
   font-size: 0.9rem;
   font-weight: bold;
@@ -172,12 +209,4 @@ textarea.form-control {
 @keyframes scaleIn {
   from { transform: scale(0); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
-}
-
-.btn-save {
-  background-color: #27ae60 !important;
-  color: white !important;
-  width: 100%;
-  border: none !important;
-  margin-top: 10px;
 }

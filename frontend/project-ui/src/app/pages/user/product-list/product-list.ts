@@ -45,15 +45,22 @@ export class ProductListComponent implements OnInit {
 
   // Método responsável por aplicar o filtro na lista
   filterProducts(term: string): void {
-    if (!term.trim()) {
-      // Se a pesquisa estiver vazia, mostra todos os produtos
+    if (!term || !term.trim()) {
       this.filteredProducts = this.allProducts;
     } else {
-      const lowerTerm = term.toLowerCase();
-      this.filteredProducts = this.allProducts.filter(product =>
-        product.name.toLowerCase().includes(lowerTerm) ||
-        product.description.toLowerCase().includes(lowerTerm)
-      );
+      const lowerTerm = term.toLowerCase().trim();
+      
+      this.filteredProducts = this.allProducts.filter(product => {
+        const nameMatch = product.name.toLowerCase().includes(lowerTerm);
+        const descMatch = product.description.toLowerCase().includes(lowerTerm);
+        
+        // Verifica se alguma categoria do produto contém o termo
+        const categoryMatch = product.categories?.some(cat => 
+          cat.name.toLowerCase().includes(lowerTerm)
+        );
+        
+        return nameMatch || descMatch || categoryMatch;
+      });
     }
   }
 
