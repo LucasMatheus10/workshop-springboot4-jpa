@@ -26,7 +26,7 @@
     <div class="nav-actions">
       <a routerLink="/products" class="nav-link">Produtos</a>
 
-      <div class="cart-section" routerLink="/payment" style="cursor: pointer; position: relative;">
+      <div *ngIf="isLoggedIn" class="cart-section" routerLink="/payment" style="cursor: pointer; position: relative;">
         <span class="cart-icon" style="font-size: 1.5rem;">🛒</span>
         <span *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
       </div>
@@ -42,6 +42,9 @@
           
           <div class="dropdown-menu" *ngIf="showDropdown">
             <div class="dropdown-header">Minha Conta</div>
+            <button *ngIf="isAdmin" class="logout-item" style="color: #3498db; background: #ebf5fb; margin-bottom: 5px;" routerLink="/admin/dashboard" (click)="showDropdown = false">
+              Painel Administrativo
+            </button>
             <button class="logout-item" (click)="logout()">Sair da Conta</button>
           </div>
         </div>

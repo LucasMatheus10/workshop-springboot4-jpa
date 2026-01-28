@@ -1,1 +1,48 @@
-<p>product-manager works!</p>
+<div class="admin-container">
+  <header class="admin-header">
+    <h2>Novo Produto</h2>
+    <button class="btn-nav" routerLink="/admin/dashboard">Voltar</button>
+  </header>
+
+  <div class="card">
+    <form (submit)="save()">
+      <div class="mb-3">
+        <label>Nome do Produto</label>
+        <input [(ngModel)]="product.name" name="name" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label>Descrição</label>
+        <textarea [(ngModel)]="product.description" name="description" class="form-control" required></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label>Preço</label>
+        <input [(ngModel)]="product.price" name="price" type="number" step="0.01" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label>URL da Imagem</label>
+        <input [(ngModel)]="product.imgUrl" name="imgUrl" class="form-control">
+      </div>
+
+      <div class="mb-3">
+        <label>Selecione as Categorias</label>
+        <div class="category-selection">
+          @for (cat of categoriesList; track cat.id) {
+            <div 
+              class="cat-badge" 
+              [class.active]="isSelected(cat)" 
+              (click)="toggleCategory(cat)"
+            >
+              {{ cat.name }}
+              <span *ngIf="isSelected(cat)" class="check-icon">✓</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <button type="submit" class="btn-nav btn-save">Cadastrar Produto</button>
+    </form>
+  </div>
+</div>

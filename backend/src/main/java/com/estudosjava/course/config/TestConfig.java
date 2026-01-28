@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.estudosjava.course.entities.Category;
 import com.estudosjava.course.entities.Order;
 import com.estudosjava.course.entities.OrderItem;
@@ -15,6 +16,7 @@ import com.estudosjava.course.entities.Payment;
 import com.estudosjava.course.entities.Product;
 import com.estudosjava.course.entities.User;
 import com.estudosjava.course.entities.enums.OrderStatus;
+import com.estudosjava.course.entities.enums.UserRole; // Importação necessária
 import com.estudosjava.course.repositories.CategoryRepository;
 import com.estudosjava.course.repositories.OrderItemRepository;
 import com.estudosjava.course.repositories.OrderRepository;
@@ -27,6 +29,7 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
     @Autowired
     private UserRepository userRepository;
 
@@ -69,7 +72,10 @@ public class TestConfig implements CommandLineRunner {
         productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6));
 
         User u1 = new User(null, "John Doe", "john.doe@email.com", "1234567890", passwordEncoder.encode("password"));
+        u1.setRole(UserRole.ADMIN); // Definido como Administrador para acesso ao painel
+
         User u2 = new User(null, "Jane Smith", "jane.smith@email.com", "0987654321", passwordEncoder.encode("password123"));
+        u2.setRole(UserRole.USER); // Usuário comum
 
         userRepository.saveAll(Arrays.asList(u1, u2));
 

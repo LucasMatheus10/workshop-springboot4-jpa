@@ -1,0 +1,183 @@
+/* Container Principal */
+.admin-container {
+  padding: 40px;
+  max-width: 800px; /* Reduzido para o formulário não ficar muito largo */
+  margin: 0 auto;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #f0f2f5;
+  padding-bottom: 15px;
+}
+
+.admin-header h2 {
+  color: #1a252f;
+  font-weight: 800;
+}
+
+/* Card do Formulário */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  border: 1px solid #e1e8ed;
+}
+
+/* Estilização dos Inputs */
+.mb-3 {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  color: #34495e;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 1.5px solid #dcdfe6;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
+}
+
+.form-control:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Botões Interativos (Padrão Dashboard) */
+.btn-nav {
+  background-color: #ffffff;
+  color: #2c3e50;
+  border: 1.5px solid #dcdfe6;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-nav:hover {
+  background-color: #3498db;
+  color: #ffffff;
+  border-color: #3498db;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+/* Botão de Salvar (Destaque Verde) */
+.btn-save {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  width: 100%; /* Botão largo para mobile-friendly */
+  margin-top: 10px;
+}
+
+.btn-save:hover {
+  background-color: #219150;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+}
+
+/* Preview da Imagem */
+.image-preview {
+  margin-top: 15px;
+  width: 100%;
+  max-height: 250px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px dashed #cbd5e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.category-selection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.cat-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: white;
+  border: 1.5px solid #cbd5e0;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4a5568;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.cat-badge:hover {
+  border-color: #3498db;
+  color: #3498db;
+  background: #f0f7ff;
+}
+
+/* Efeito Visual de Seleção */
+.cat-badge.active {
+  background: #3498db;
+  color: white;
+  border-color: #2980b9;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.check-icon {
+  font-size: 0.9rem;
+  font-weight: bold;
+  animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.btn-save {
+  background-color: #27ae60 !important;
+  color: white !important;
+  width: 100%;
+  border: none !important;
+  margin-top: 10px;
+}

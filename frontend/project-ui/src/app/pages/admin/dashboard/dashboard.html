@@ -1,1 +1,48 @@
-<p>dashboard works!</p>
+<div class="admin-container">
+  <header class="admin-header">
+    <h2 class="title">Monitor de Pedidos</h2>
+    <div class="actions">
+      <button class="btn-nav" routerLink="/admin/products">
+        Gerir Produtos
+      </button>
+      <button class="btn-nav" routerLink="/admin/categories">
+        Categorias
+      </button>
+    </div>
+  </header>
+
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Data</th>
+          <th>Total</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (order of orders; track order.id) {
+          <tr>
+            <td><strong>#{{ order.id }}</strong></td>
+            <td>{{ order.clientName }}</td>
+            <td>{{ order.moment | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td class="price-cell">{{ order.total | currency:'BRL' }}</td>
+            <td>
+              <span class="status-badge" [attr.data-status]="order.orderStatus">
+                {{ order.orderStatus }}
+              </span>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 40px; color: #7f8c8d;">
+              Nenhum pedido encontrado no sistema.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>  
