@@ -77,33 +77,31 @@ INSERT INTO public.tb_product_category VALUES (2, 53);
 -- Name: tb_category_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.tb_category_seq', 101, true);
+SELECT setval('tb_category_seq', 101, true);
 
 
 --
 -- Name: tb_order_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
 
-SELECT pg_catalog.setval('public.tb_order_seq', 101, true);
+
+SELECT setval('tb_order_seq', 101, true);
 
 
 --
 -- Name: tb_product_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.tb_product_seq', 51, true);
+SELECT setval('tb_product_seq', 51, true);
 
 
 --
 -- Name: tb_user_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.tb_user_seq', 101, true);
+SELECT setval('tb_user_seq', 101, true);
 
 
 --
 -- PostgreSQL database dump complete
 --
-
-\unrestrict NiYgfny6Je4vb2rUpfJSHt1FrGCYZegOhxTR5xm1qFIMlj0mG7JdQz2qkW3HiJ0
 
