@@ -11,7 +11,7 @@ INSERT INTO tb_user (id, email, name, password, phone, role) VALUES
 -- Data for Name: tb_order; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO tb_order (id, moment, status, client_id) VALUES
+INSERT INTO tb_order (id, moment, order_status, client_id) VALUES
 (2, '2024-06-02 08:30:00-03', 'WAITING_PAYMENT', 2),
 (3, '2024-06-03 11:15:00-03', 'SHIPPED', 1),
 (1, '2026-01-28 14:15:10.128047-03', 'PAID', 1);
@@ -20,7 +20,7 @@ INSERT INTO tb_order (id, moment, status, client_id) VALUES
 -- Data for Name: payment; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO payment (payment_date, order_id) VALUES
+INSERT INTO payment (moment, order_id) VALUES
 ('2026-01-28 14:15:10.163816-03', 1);
 
 
@@ -38,7 +38,7 @@ INSERT INTO tb_category (id, name) VALUES
 -- Data for Name: tb_product; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO tb_product (id, description, image_url, name, price) VALUES
+INSERT INTO tb_product (id, description, img_url, name, price) VALUES
 (2, '42 inch smart TV', 'https://www.hisense.com.br/_next/image?url=%2FA4N%2F1.png&w=2048&q=100', 'Smart TV', 2190),
 (3, 'Apple laptop', 'https://t4.ftcdn.net/jpg/06/01/14/23/360_F_601142328_VnY6DMf1sC0RULodemaCSrvXSlFhO1lA.jpg', 'Macbook Pro', 6250),
 (4, 'High performance gaming PC', 'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&q=80&w=1000', 'PC Gamer', 3200),
