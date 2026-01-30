@@ -11,7 +11,7 @@ INSERT INTO tb_user (id, email, name, password, phone, role) VALUES
 -- Data for Name: tb_order; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO tb_order (id, order_date, status, user_id) VALUES
+INSERT INTO tb_order (id, moment, status, client_id) VALUES
 (2, '2024-06-02 08:30:00-03', 'WAITING_PAYMENT', 2),
 (3, '2024-06-03 11:15:00-03', 'SHIPPED', 1),
 (1, '2026-01-28 14:15:10.128047-03', 'PAID', 1);
