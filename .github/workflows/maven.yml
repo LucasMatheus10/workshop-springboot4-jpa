@@ -53,6 +53,7 @@ jobs:
         context: ./backend
         push: true
         tags: lucasmatheus08/techstore-backend:v1
+        no-cache: true
 
     - name: Build and Push Frontend
       uses: docker/build-push-action@v5
