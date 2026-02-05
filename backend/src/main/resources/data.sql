@@ -51,7 +51,7 @@ INSERT INTO tb_product_category (product_id, category_id) VALUES
 (6, 3),
 (7, 3),
 (8, 3),
-(9, 2),
+(9, 2);
 
 
 ALTER SEQUENCE tb_user_seq RESTART WITH 3;
